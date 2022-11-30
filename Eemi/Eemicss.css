@@ -1,0 +1,58 @@
+body {
+    background-image: url("https://pics.freeartbackgrounds.com/fullhd/Sky_with_Clouds_and_Airplane_Background-1482.jpg");
+    background-size: cover;
+}
+.container {
+    width: 700px;
+    height: 700px;
+    margin: auto;
+    text-align: center;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+    position: relative;
+    top: -5rem;
+    z-index: -1;
+}
+.headline {
+    text-align: center;
+    z-index: 10;
+    margin-top: 35px;
+    margin-bottom: 120px;
+}
+.play-button {
+ text-align: center;
+ margin-top: 30px;
+ padding: 10px 80px 10px 80px;
+background-color: transparent;
+-webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
+box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
+border: 3px double #000000;
+border-radius: 3px;
+}
+.play-button .button:hover {
+  background:#7A0000;
+  color:white;
+}
+.high-score {
+ text-align: center;
+ margin-top: 30px;
+ padding: 10px 80px 10px 80px;
+background-color: transparent;
+-webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
+box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
+border: 3px double #000000;
+border-radius: 3px;
+}
+.how-to-play {
+ text-align: center;
+ margin-top: 30px;
+ padding: 10px 80px 10px 80px;
+background-color: transparent;
+-webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
+box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
+border: 3px double #000000;
+border-radius: 3px;
+}
+.btns {
+    margin-top: 80px;
+}
