@@ -215,5 +215,3 @@ while main_menu_int != "1" or "2" or "3":
         exit()
     else:
         main_menu_int = input("Main menu\n1.Play\n2.Scores\n3.Quit\n: ")
-
-print("Testi")
