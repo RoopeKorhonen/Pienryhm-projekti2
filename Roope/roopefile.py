@@ -28,7 +28,7 @@ def get_highscores():
     cursor.execute(score_database)
     result_set = cursor.fetchone()
     if cursor.rowcount > 0:
-        return {"name": result_set[0], "highscore": result_set[1]}
+        return {"screen_name": result_set[0], "highscores": result_set[1]}
     else:
         return {"Error": "No results. (Invalid sql code)"}
 

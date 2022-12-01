@@ -15,7 +15,7 @@ async function highscore(){
         const data = await response.json();
         console.log('result', data);
         //renderResult(data);
-        return data
+        return data;
         } catch (error){
         console.log('Verkkovirhe: ', error)
     }
