@@ -1,58 +1,53 @@
-body {
-    background-image: url("https://pics.freeartbackgrounds.com/fullhd/Sky_with_Clouds_and_Airplane_Background-1482.jpg");
-    background-size: cover;
+* {
+  font-family: "Lucida Console", Courier, monospace;
 }
-.container {
-    width: 700px;
-    height: 700px;
-    margin: auto;
-    text-align: center;
-    border: 1px solid transparent;
-    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
-    position: relative;
-    top: -5rem;
-    z-index: -1;
+body {
+  background-image: url(https://flyingmag.sfo3.digitaloceanspaces.com/flyingma/wp-content/uploads/2022/06/28094407/shutterstock_417878923-scaled.jpg);
+  background-size: cover;
+  overflow: hidden;
 }
 .headline {
     text-align: center;
     z-index: 10;
     margin-top: 35px;
-    margin-bottom: 120px;
+    font-size: 40px;
 }
-.play-button {
- text-align: center;
- margin-top: 30px;
- padding: 10px 80px 10px 80px;
-background-color: transparent;
--webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
-border: 3px double #000000;
-border-radius: 3px;
+.container {
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.play-button .button:hover {
-  background:#7A0000;
-  color:white;
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 33.3%;
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
 }
-.high-score {
- text-align: center;
- margin-top: 30px;
- padding: 10px 80px 10px 80px;
-background-color: transparent;
--webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
-border: 3px double #000000;
-border-radius: 3px;
+.main-menu-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 33.3%;
 }
-.how-to-play {
- text-align: center;
- margin-top: 30px;
- padding: 10px 80px 10px 80px;
-background-color: transparent;
--webkit-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
-box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 5px 5px 15px 5px rgba(255,139,253,0);
-border: 3px double #000000;
-border-radius: 3px;
+.main-menu-options .btn:first-child {
+  margin-right: 10px;
 }
-.btns {
-    margin-top: 80px;
+.btn {
+  background: transparent;
+  color: black;
+  width: 100%;
+  padding: .5rem 0;
+  margin-bottom: .75rem;
+  font-size: 3rem;
+  letter-spacing: .025em;
+  cursor: pointer;
+}
+.btn:hover {
+  color: rgb(247, 247, 247);
 }
