@@ -20,36 +20,16 @@ body {
   justify-content: center;
   align-items: center;
 }
-.main-menu {
+.high-score-table {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 33.3%;
-  margin-top: 2rem;
   margin-bottom: 1.25rem;
 }
-.main-menu-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 33.3%;
+.high-score-table th {
+    font-size: 45px;
+    margin-left: 10px;
 }
-.main-menu-options .btn:first-child {
-  margin-right: 10px;
-}
-.btn {
-  background: transparent;
-  width: 100%;
-  padding: .5rem 0;
-  margin-bottom: 2rem;
-  font-size: 3rem;
-  letter-spacing: .025em;
-  cursor: pointer;
-  border: transparent;
-  -webkit-text-stroke: 1px silver;
-}
-.btn:hover {
-  color: rgb(247, 247, 247);
-  -webkit-text-stroke: 2px black;
-}
+
