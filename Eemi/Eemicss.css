@@ -40,14 +40,16 @@ body {
 }
 .btn {
   background: transparent;
-  color: black;
   width: 100%;
   padding: .5rem 0;
-  margin-bottom: .75rem;
+  margin-bottom: 2rem;
   font-size: 3rem;
   letter-spacing: .025em;
   cursor: pointer;
+  border: transparent;
+  -webkit-text-stroke: 1px silver;
 }
 .btn:hover {
   color: rgb(247, 247, 247);
+  -webkit-text-stroke: 2px black;
 }
