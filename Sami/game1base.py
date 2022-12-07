@@ -13,7 +13,7 @@ connection = mysql.connector.connect(
          )
 
 def co2_budgetgiver():
-    co2_budget = 5000
+    co2_budget = 15000
     return co2_budget
 
 
