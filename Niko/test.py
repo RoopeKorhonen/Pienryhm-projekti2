@@ -20,7 +20,7 @@ def get_airport(chosen_name):
     cursor.execute(sql)
     result_set = cursor.fetchone()
     if cursor.rowcount > 0:
-        return {"ICAO": result_set[0], "name": result_set[1], "municipality": result_set[2]}
+        return {"latitude_deg": result_set[0], "longitude_deg": result_set[1]}
     else:
         return {"Error": "No results. (Invalid ICAO code)"}
 
