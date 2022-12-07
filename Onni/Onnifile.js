@@ -49,3 +49,17 @@ for (let i = 0; i <= 10; i++){
     navigator.geolocation.getCurrentPosition(success, error, options);
 
 
+    async function getAirport(icao){
+        try{
+        const response = await fetch('http://127.0.0.1:5000/get_airport/' + icao);
+        const data = await response.json();
+
+        console.log('result', data);
+        //renderResult(data);
+        return data
+        } catch (error){
+            console.log('Verkkovirhe: ', error)
+        }
+    }
+
+    getAirport('Finland')
