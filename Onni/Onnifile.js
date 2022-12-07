@@ -47,3 +47,5 @@ for (let i = 0; i <= 10; i++){
 
     // Starts the location search
     navigator.geolocation.getCurrentPosition(success, error, options);
+
+
