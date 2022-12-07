@@ -25,6 +25,14 @@ class Airport:
     def __init__(self, ident, active=False, data=None):
         self.ident = ident
         self.active = active
+        self.name = data['name']
+        self.latitude = float(data['latitude'])
+        self.longitude = float(data['longitude'])
+        sql = "SELECT  latitude_deg, longitude_deg FROM Airport WHERE ident='" + ident + "'"
+        print(sql)
+        cur = config.conn.cursor()
+        cur.execute(sql)
+        res = cur.fetchall()
 
         # vältetään kauhiaa määrää hakuja
         if data is None:

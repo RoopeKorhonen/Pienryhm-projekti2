@@ -1,6 +1,14 @@
-from flask import Flask
+import json
+import os
+
 import mysql.connector
+from dotenv import load_dotenv
+from flask import Flask, request
 from flask_cors import CORS
+
+import config
+from game import Game
+load_dotenv()
 
 
 def connect_db():
@@ -31,10 +39,24 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
+def fly(id, dest, consumption=0, player=None):
+    game = Game(id, dest, consumption)
+    nearby = game.location[0].find_nearby_airports()
+    for a in nearby:
+        game.location.append(a)
+    json_data = json.dumps(game, default=lambda o: o.__dict__, indent=4)
+    return json_data
+
+
 @app.route('/fly_to/<icao>')
 def fly_to():
-    print('haha ebin :DDD')
-
+    args = request.args
+    id = args.get("game")
+    dest = args.get("dest")
+    consumption = args.get("consumption")
+    json_data = fly(id, dest, consumption)
+    print("*** Called flyto endpoint ***")
+    return json_data
 
 @app.route('/airport/<icao>')
 def airport(icao):
