@@ -1,11 +1,6 @@
+from flask import Flask
 import mysql.connector
-from dotenv import load_dotenv
-from flask import Flask, request
 from flask_cors import CORS
-import string, random
-from airport import Airport
-import config
-load_dotenv()
 
 
 def connect_db():
@@ -23,11 +18,11 @@ def get_airport(chosen_name):
     sql = f"SELECT latitude_deg, longitude_deg FROM airport Where iso_country in (select iso_country from country where name = '" + chosen_name + "')"
     cursor = connection.cursor()
     cursor.execute(sql)
-    result_set = cursor.fetchall()
+    result_set = cursor.fetchone()
     if cursor.rowcount > 0:
         return {"latitude_deg": result_set[0], "longitude_deg": result_set[1]}
     else:
-        return {"Error": "No results. (Invalid name code)"}
+        return {"Error": "No results. (Invalid ICAO code)"}
 
 
 connection = connect_db()
@@ -36,14 +31,14 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-@app.route('/fly_to/<chosen_name>')
+@app.route('/fly_to/<icao>')
 def fly_to():
     print('haha ebin :DDD')
 
 
 @app.route('/airport/<icao>')
-def airport(chosen_name):
-    response = get_airport(chosen_name)
+def airport(icao):
+    response = get_airport(icao)
     return response
 
 
