@@ -15,17 +15,15 @@ def connect_db():
 
 
 def get_airport(chosen_name):
-    sql = f"SELECT latitude_deg, longitude_deg FROM airport Where iso_country in (select iso_country from country where name = '" + chosen_name + "')"
+    sql = f"SELECT name, latitude_deg, longitude_deg FROM airport Where iso_country in (select iso_country from country where name = '" + chosen_name + "')"
     cursor = connection.cursor()
     cursor.execute(sql)
     result_set = cursor.fetchall()
 
     result = list(map(list, zip(*result_set)))
-    print(result[0])
-    print(result[1])
 
     if cursor.rowcount > 0:
-        return {"latitude_deg": result[0], "longitude_deg": result[1]}
+        return {"name": result[0], "latitude_deg": result[1], "longitude_deg": result[2]}
     else:
         return {"Error": "No results. (Invalid ICAO code)"}
 
