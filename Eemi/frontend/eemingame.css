@@ -1,0 +1,56 @@
+* {
+  font-family: "Lucida Console", Courier, monospace;
+}
+body {
+  background-image: url(https://images.hdqwalls.com/download/passenger-plane-in-clouds-view-from-far-away-26-1920x1080.jpg);
+  background-size: cover;
+  overflow: hidden;
+}
+.headline {
+    text-align: center;
+    z-index: 10;
+    margin-top: 35px;
+    font-size: 25px;
+}
+.map-container {
+    height: 70vh;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.gamemap {
+    width: 1200px;
+    height:500px;
+    border: 5px solid red;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.outer {
+    padding-top: 0.5%;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+.box1 {
+    display: inline-block;
+    border: 5px solid black;
+    background-color: transparent;
+}
+.box2 {
+    display: inline-block;
+    border: 5px solid black;
+    background-color: transparent;
+}
+.box3 {
+    display: inline-block;
+    border: 5px solid black;
+    background-color: transparent;
+}

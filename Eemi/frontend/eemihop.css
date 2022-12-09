@@ -1,0 +1,25 @@
+* {
+  font-family: "Lucida Console", Courier, monospace;
+}
+body {
+  background-image: url(https://images.hdqwalls.com/download/passenger-plane-in-clouds-view-from-far-away-26-1920x1080.jpg);
+  background-size: cover;
+  overflow: hidden;
+}
+.headline {
+    text-align: center;
+    z-index: 10;
+    margin-top: 40px;
+    font-size: 35px;
+}
+.container {
+  height: 70vh;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  margin-left: 360px;
+}
+.container h1
