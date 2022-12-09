@@ -1,9 +1,9 @@
 target = document.getElementById('lol')
 
-
-for (let i = 0; i <= 10; i++){
+const map = L.map('map')
+/* for (let i = 0; i <= 10; i++){
     target.innerText += 'ei vidddu miden ebin juddu :DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-}
+} */
 
     const options = {
       enableHighAccuracy: true,
@@ -22,7 +22,7 @@ for (let i = 0; i <= 10; i++){
       console.log(`More or less ${crd.accuracy} meters.`);
 
       // Use the leaflet.js library to show the location on the map (https://leafletjs.com/)
-      const map = L.map('map').setView([crd.latitude, crd.longitude], 1);
+      map.setView([crd.latitude, crd.longitude], 1);
 
       /* for (let i = 0; i <= 10; i++){
           let lat = Math.floor(Math.random() * 700)
@@ -49,19 +49,23 @@ for (let i = 0; i <= 10; i++){
     navigator.geolocation.getCurrentPosition(success, error, options);
 
 
-    async function getAirport(icao){
+    async function getAirport(){
         try{
-        const response = await fetch('http://127.0.0.1:5000/get_airport/' + icao);
+        const response = await fetch('http://127.0.0.1:5000/get_airport/');
         const data = await response.json();
 
         for (let i = 0; i !== data.latitude_deg.length; i++){
+
+            let name = data.name[i]
             let lat = data.latitude_deg[i]
             let long = data.longitude_deg[i]
             console.log(name, lat, long)
 
-            L.marker([lat, long]).addTo(map)
-            .bindPopup(name)
+            const marker = L.marker([lat, long]).addTo(map)
+            .bindPopup('You are here: ' + name)
         }
+
+
 
         console.log('result', data);
         //renderResult(data);
@@ -71,5 +75,5 @@ for (let i = 0; i <= 10; i++){
         }
     }
 
-    getAirport('Finland')
+    getAirport()
 

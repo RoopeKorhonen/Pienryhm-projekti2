@@ -14,8 +14,8 @@ def connect_db():
     )
 
 
-def get_airport(chosen_name):
-    sql = f"SELECT name, latitude_deg, longitude_deg FROM airport Where iso_country in (select iso_country from country where name = '" + chosen_name + "')"
+def get_airport():
+    sql = f"SELECT ident, name, latitude_deg, longitude_deg FROM airport where type like '%airport' ORDER BY RAND() LIMIT 100"
     cursor = connection.cursor()
     cursor.execute(sql)
     result_set = cursor.fetchall()
@@ -23,7 +23,7 @@ def get_airport(chosen_name):
     result = list(map(list, zip(*result_set)))
 
     if cursor.rowcount > 0:
-        return {"name": result[0], "latitude_deg": result[1], "longitude_deg": result[2]}
+        return {"ident": result[0], "name": result[1], "latitude_deg": result[2], "longitude_deg": result[3]}
     else:
         return {"Error": "No results. (Invalid ICAO code)"}
 
@@ -39,9 +39,9 @@ def fly_to():
     print('haha ebin :DDD')
 
 
-@app.route('/get_airport/<chosen_name>')
-def airport(chosen_name):
-    response = get_airport(chosen_name)
+@app.route('/get_airport/')
+def airport():
+    response = get_airport()
     return response
 
 
