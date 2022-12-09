@@ -29,7 +29,8 @@ body {
   margin-bottom: 1.25rem;
 }
 .high-score-table th {
-    font-size: 45px;
-    margin-left: 10px;
+    font-size: 40px;
 }
-
+.high-score-table td {
+    font-size: 30px;
+}
