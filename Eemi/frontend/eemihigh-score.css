@@ -6,6 +6,16 @@ body {
   background-size: cover;
   overflow: hidden;
 }
+nav img {
+   width: 5em;
+   height: 5em;
+   flex: 1;
+}
+.nav-return {
+    justify-content: flex-start;
+    float: right;
+    margin-right: 20px;
+}
 .headline {
     text-align: center;
     z-index: 10;
