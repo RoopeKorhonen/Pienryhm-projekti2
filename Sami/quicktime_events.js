@@ -77,18 +77,57 @@ const questions = [
         wrong_answer: '54.2km / hour'
     },
 
+    {
+        question: 'How many passengers can travel with an A380?',
+        correct_answer: '853 passengers',
+        wrong_answer: '1378 passengers'
+    },
+
+    {
+        question: 'How many passengers can travel with an A380?',
+        correct_answer: '853 passengers',
+        wrong_answer: '1378 passengers'
+    },
+
+    {
+        question: 'The first airplane ever flown in the air happened in year...',
+        correct_answer: '1903',
+        wrong_answer: '1878'
+    },
+
+    {
+        question: 'How many airplane crashes happen approximately per year?',
+        correct_answer: '80',
+        wrong_answer: '200'
+    },
+
+    {
+        question: 'What is the top speed ( km / h ) of the fastest airplane in the world?',
+        correct_answer: '3500km / hour',
+        wrong_answer: '2333km / hour'
+    },
+
+    {
+        question: 'What does G-forces indicate?',
+        correct_answer: 'The force of gravity focusing on a target.',
+        wrong_answer: '2333km / hour'
+    },
+
 ];
 
 
 //Kun lento tapahtuu, niin tulee kutsu tähän funktioon
 
 function quicktime() {
-    let right_answer = ''
-    let wrong_answer = ''
-    const button1 = document.getElementById('button1');
-    const button2 = document.getElementById('button2');
-    let correct = ''
     if (Math.random() < 1 / 3) {
+        const modal = document.getElementById("myModal")
+        modal.style.display = "block"
+
+        let right_answer = ''
+        let wrong_answer = ''
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+        let correct = ''
         let question_num = Math.floor(Math.random() * questions.length);
         let header = document.querySelector('h1');
         let question_text = questions[question_num].question;
@@ -113,8 +152,10 @@ function quicktime() {
                 // lisää 100 co2 budjettiin
 
                 console.log("OIKEIN!!!!!!!!!!!!!!")
+                modal.style.display = "none"
             } else {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
+                modal.style.display = "none"
             }
 
         })
@@ -126,12 +167,16 @@ function quicktime() {
                 // lisää 100 co2 budjettiin
 
                 console.log("OIKEIN!!!!!!!!!!!!!!")
+                modal.style.display = "none"
             } else {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
+                modal.style.display = "none"
             }
 
         })
+
         return question_text
+
 
     }
 
@@ -139,7 +184,3 @@ function quicktime() {
 
 
 quicktime()
-
-
-// modal.style.display = "block"; tulee näkyville
-// modal.style.display = "none"; poistuu näkyvistä
