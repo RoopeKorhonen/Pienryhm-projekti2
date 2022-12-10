@@ -2,7 +2,7 @@
 console.log("Program starts")
 async function highscore() {
     try {
-        const response = await fetch('http://127.0.0.1:5000/get_highscores/5');
+        const response = await fetch('http://127.0.0.1:5000/get_highscores/');
         const data = await response.json();
         console.log("Data inffo",data)
         append(data)

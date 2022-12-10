@@ -44,7 +44,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-def fly(id, dest, consumption=0, player=None):
+def fly(id, dest, consumption=0):
     game = Game(id, dest, consumption)
     nearby = game.location[0].find_nearby_airports()
     for a in nearby:
