@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from flask import Flask, request
 from flask_cors import CORS
 import string, random
-from airport import Airport
-import config
+
+
 
 
 load_dotenv()
@@ -20,7 +20,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='',
+        password='moodleroope',
         autocommit=True
     )
 
@@ -119,10 +119,7 @@ class Airport:
 
 @app.route('/fly_to/<icao>')
 def fly_to():
-    args = request.args
-    id = args.get("game")
-    dest = args.get("dest")
-    consumption = args.get("consumption")
+    
     json_data = fly(id, dest, consumption)
     print("*** Called flyto endpoint ***")
     return json_data
