@@ -7,7 +7,7 @@ async function player_info(){
     try {
         const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
         const data = await response.json();
-        console.log("Data inffo",data)
+        console.log("Data info",data)
         append(data)
         return data;
     } catch (error) {
