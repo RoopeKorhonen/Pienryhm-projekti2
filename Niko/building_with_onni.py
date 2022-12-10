@@ -25,21 +25,6 @@ def connect_db():
     )
 
 
-def get_airport():
-    sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    result_set = cursor.fetchall()
-
-    result = list(map(list, zip(*result_set)))
-    print(result[0])
-    print(result[1])
-
-    if cursor.rowcount > 0:
-        return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3], "longitude_deg": result[4]}
-    else:
-        return {"Error": "No results. (Invalid ICAO code)"}
-
 
 connection = connect_db()
 app = Flask(__name__)
@@ -94,61 +79,32 @@ class Game:
 
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
-    def __init__(self, ident, active=False, data=None):
+    def __init__(self, ident, longitude, latitude, screen_name):
         self.ident = ident
-        self.active = active
-        self.name = data['name']
-        self.latitude = float(data['latitude'])
-        self.longitude = float(data['longitude'])
+        self.screen_name = screen_name
+        self.latitude = float(latitude)
+        self.longitude = float(longitude)
         sql = "SELECT  latitude_deg, longitude_deg FROM Airport WHERE ident='" + ident + "'"
-        print(sql)
-        cur = config.conn.cursor()
-        cur.execute(sql)
-        res = cur.fetchall()
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
 
-        # vältetään kauhiaa määrää hakuja
-        if data is None:
-            # find airport from DB
-            sql = "SELECT  latitude_deg, longitude_deg FROM Airport WHERE ident='" + ident + "'"
-            print(sql)
-            cur = config.conn.cursor()
-            cur.execute(sql)
-            res = cur.fetchall()
-            if len(res) == 1:
-                # game found
-                self.ident = res[0][0]
-                self.name = res[0][1]
-                self.latitude = float(res[0][2])
-                self.longitude = float(res[0][3])
+    def get_airport(self):
+        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result_set = cursor.fetchall()
+
+        result = list(map(list, zip(*result_set)))
+        print(result[0])
+        print(result[1])
+
+        if cursor.rowcount > 0:
+            return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
+                    "longitude_deg": result[4]}
         else:
-            self.name = data['name']
-            self.latitude = float(data['latitude'])
-            self.longitude = float(data['longitude'])
-
-
-    def find_nearby_airports(self):
-        lista = []
-        # haetaan kaikki tiedot kerralla
-        sql = "SELECT ident, name, latitude_deg, longitude_deg FROM Airport WHERE latitude_deg BETWEEN "
-        sql += str(self.latitude - config.max_lat_dist) + " AND " + str(self.latitude + config.max_lat_dist)
-        sql += " AND longitude_deg BETWEEN "
-        sql += str(self.longitude - config.max_lon_dist) + " AND " + str(self.longitude + config.max_lon_dist)
-        print(sql)
-        cur = config.conn.cursor()
-        cur.execute(sql)
-        res = cur.fetchall()
-        for r in res:
-            if r[0] != self.ident:
-                # lisätty data, jottei jokaista kenttää tartte hakea
-                # uudestaan konstruktorissa
-                data = {'name': r[1], 'latitude': r[2], 'longitude': r[3]}
-                print(data)
-                nearby_apt = Airport(r[0], False, data)
-                nearby_apt.distance = self.distanceTo(nearby_apt)
-                if nearby_apt.distance <= config.max_distance:
-                    lista.append(nearby_apt)
-                    nearby_apt.co2_consumption = self.co2_consumption(nearby_apt.distance)
-        return lista
+            return {"Error": "No results. (Invalid ICAO code)"}
 
     def distanceTo(self, target):
 
@@ -174,7 +130,7 @@ def fly_to():
 
 @app.route('/airport/<icao>')
 def airport(icao):
-    response = get_airport(icao)
+    response = Airport.get_airport()
     return response
 
 
