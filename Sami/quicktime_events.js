@@ -81,7 +81,7 @@ const button2 = document.getElementById('button2');
 let correct = ''
 
 //Kun lento tapahtuu, niin tulee kutsu tähän funktioon
-
+//arpominen 1/3 mahdollisuudellta funktio quicktime toteutuisi vielä tekemättä.
 function quicktime() {
     let question_num = Math.floor(Math.random() * questions.length);
     let header = document.querySelector('h1');
