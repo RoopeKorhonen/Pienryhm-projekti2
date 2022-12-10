@@ -20,7 +20,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='',
+        password='gutpo80',
         autocommit=True
     )
 
@@ -123,8 +123,8 @@ def fly_to():
     return json_data
 
 @app.route('/airport/<icao>')
-def airport():
-    response = Airport.get_airport()
+def airport(icao):
+    response = Airport.get_airport(icao)
     return response
 
 

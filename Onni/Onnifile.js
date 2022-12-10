@@ -67,9 +67,12 @@ const map = L.map('map')
 
             const popupContent = document.createElement('div')
             const goButton = document.createElement('button')
+            const h2text = document.createElement('h2')
+            h2text.innerText = name
             goButton.innerText = 'Fly here'
             goButton.classList.add('button')
             popupContent.append(goButton)
+            popupContent.append(h2text)
             goButton.addEventListener('click', function () {
                 console.log(icao)
             });
