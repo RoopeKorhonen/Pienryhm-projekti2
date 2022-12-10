@@ -25,13 +25,18 @@ def connect_db():
     )
 
 
-def get_airport(chosen_name):
-    sql = f"SELECT latitude_deg, longitude_deg FROM airport Where iso_country in (select iso_country from country where name = '" + chosen_name + "')"
+def get_airport():
+    sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
     cursor = connection.cursor()
     cursor.execute(sql)
-    result_set = cursor.fetchone()
+    result_set = cursor.fetchall()
+
+    result = list(map(list, zip(*result_set)))
+    print(result[0])
+    print(result[1])
+
     if cursor.rowcount > 0:
-        return {"latitude_deg": result_set[0], "longitude_deg": result_set[1]}
+        return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3], "longitude_deg": result[4]}
     else:
         return {"Error": "No results. (Invalid ICAO code)"}
 
@@ -44,7 +49,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 def fly(id, dest, consumption=0):
     game = Game(id, dest, consumption)
-    nearby = game.location[0].find_nearby_airports()
+    nearby = game.location[0].get_airport()
     for a in nearby:
         game.location.append(a)
     json_data = json.dumps(game, default=lambda o: o.__dict__, indent=4)
