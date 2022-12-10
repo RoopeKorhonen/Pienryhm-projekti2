@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from flask import Flask, request
 from flask_cors import CORS
 import string, random
-from airport import Airport
-import config
+
+
 
 
 load_dotenv()
@@ -20,7 +20,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='',
+        password='moodleroope',
         autocommit=True
     )
 
@@ -53,8 +53,8 @@ class Game:
             "screen_name": player,
             "difficulty": 1,
             "co2": {
-                "consumed": 0,
-                "budget": 5000
+                "consumed": config.co2_initial,
+                "budget": config.co2_budget
             },
             "previous_location": ""
 
@@ -78,13 +78,16 @@ class Game:
 
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
-    def __init__(self, ident, longitude, latitude, name, municipality):
+    def __init__(self, ident, longitude, latitude, screen_name):
         self.ident = ident
-        self.name = name
+        self.screen_name = screen_name
         self.latitude = float(latitude)
         self.longitude = float(longitude)
-        self.municipality = municipality
-
+        sql = "SELECT  latitude_deg, longitude_deg FROM Airport WHERE ident='" + ident + "'"
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
 
     def get_airport(self):
         sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
@@ -93,6 +96,8 @@ class Airport:
         result_set = cursor.fetchall()
 
         result = list(map(list, zip(*result_set)))
+        print(result[0])
+        print(result[1])
 
         if cursor.rowcount > 0:
             return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
@@ -114,16 +119,13 @@ class Airport:
 
 @app.route('/fly_to/<icao>')
 def fly_to():
-    args = request.args
-    id = args.get("game")
-    dest = args.get("dest")
-    consumption = args.get("consumption")
+    
     json_data = fly(id, dest, consumption)
     print("*** Called flyto endpoint ***")
     return json_data
 
 @app.route('/airport/<icao>')
-def airport():
+def airport(icao):
     response = Airport.get_airport()
     return response
 

@@ -67,8 +67,8 @@ const questions = [
 
     {
         question: 'Flying from Helsinki to Newyork will approximately result co2 fumes per person... ',
-        correct_answer: '500g of co2',
-        wrong_answer: '1kg of co2'
+        correct_answer: '1kg of co2',
+        wrong_answer: '500g of co2'
     },
 
     {
@@ -84,9 +84,9 @@ const questions = [
     },
 
     {
-        question: 'How many passengers can travel with an A380?',
-        correct_answer: '853 passengers',
-        wrong_answer: '1378 passengers'
+        question: 'When was the first flight flown with Airbus-380?',
+        correct_answer: 'In the year 2005',
+        wrong_answer: 'In the year 2010'
     },
 
     {
@@ -108,21 +108,36 @@ const questions = [
     },
 
     {
-        question: 'What does G-forces indicate?',
-        correct_answer: 'The force of gravity focusing on a target.',
-        wrong_answer: '2333km / hour'
+        question: 'What is the approximate chance of an airplane crash occurring?',
+        correct_answer: '1 in 1.2 million',
+        wrong_answer: '1 in 500 000'
+    },
+
+    {
+        question: 'What is the approximate chance of dying in an airplane crash?',
+        correct_answer: '1 in 11.7 million',
+        wrong_answer: '1 in 255 million'
     },
 
 ];
 
 
-//Kun lento tapahtuu, niin tulee kutsu tähän funktioon
 
+//Toinen funktio quickTime:n ylle, joka on ajastin kysymyksille.
+
+function timeIsUp(){
+    alert("Time is up, penalty has been added to your co2 fuel.")
+    //tähän -200 co2 komento, joka päivittää tiedot.
+    modal.style.display = "none"
+}
+
+//Kun lento tapahtuu, niin tulee kutsu tähän funktioon
 function quicktime() {
     if (Math.random() < 1 / 3) {
+
+
         const modal = document.getElementById("myModal")
         modal.style.display = "block"
-
         let right_answer = ''
         let wrong_answer = ''
         const button1 = document.getElementById('button1');
@@ -135,6 +150,23 @@ function quicktime() {
         wrong_answer = questions[question_num].wrong_answer
         correct = right_answer
         header.innerHTML = question_text
+
+        let time = 5;
+        let timerElement = document.getElementById("timer");
+        timerElement.innerHTML = "Time remaining: 5 seconds";
+        //document.body.appendChild(timerElement);
+        let timer = setInterval(function () {
+            time = time - 1;
+            timerElement.innerHTML = "Time remaining: " + time + " seconds";
+            if (time === -1) {
+                alert("Time is up, penalty has been added to your co2 fuel.")
+                //tähän -200 co2 komento, joka päivittää tiedot.
+                modal.style.display = "none"
+                clearInterval(timer);
+            }}, 1000);
+
+
+
         let button_rand = Math.floor(Math.random() * 2)
         if (button_rand === 1) {
             button1.innerText = right_answer
@@ -147,6 +179,7 @@ function quicktime() {
         console.log(question_text)
         button1.addEventListener('click', function () {
             let answer = button1.innerText;
+            clearInterval(timer);
 
             if (answer === correct) {
                 // lisää 100 co2 budjettiin
@@ -162,6 +195,7 @@ function quicktime() {
 
         button2.addEventListener('click', function () {
             let answer = button2.innerText;
+            clearInterval(timer);
 
             if (answer === correct) {
                 // lisää 100 co2 budjettiin
@@ -184,3 +218,5 @@ function quicktime() {
 
 
 quicktime()
+
+//Kaikki toimii

@@ -16,18 +16,16 @@ def connect_db():
 
 class Game:
 
-    def __init__(self, id, loc, consumption, player=None, ):
+    def __init__(self, loc, consumption, player=None, ):
         self.status = {}
         self.location = []
-        letters = string.ascii_lowercase + string.ascii_uppercase + string.digits
         self.status = {
-            "id": ''.join(random.choice(letters) for i in range(20)),
             "high_scores": 0,
-            "screen_name": player,
-            "difficulty": 1,
+            "screen_name": None,
+            "difficulty": None,
             "co2": {
-                "consumed": config.co2_initial,
-                "budget": config.co2_budget
+                "consumed": 0,
+                "budget": 50000
             },
             "previous_location": ""
 
