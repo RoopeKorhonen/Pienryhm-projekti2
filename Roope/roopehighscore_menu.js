@@ -15,17 +15,17 @@ function append(data){
     console.log(data)
     let list = document.getElementById('highscorelist');
     for(let i = 0; i < data.length; i++){
-    let player = document.createElement("tr")
-    let player_username = document.createElement("td")
-    let player_points = document.createElement("td")
-    let player_difficulty = document.createElement("td")
-    player_username.innerText = data[i]['screen_name']
-    player_points.innerText = data[i]['highscores']
-    player_difficulty.innerText = data[i]['difficulty']
-    player.appendChild(player_username)
-    player.appendChild(player_points)
-    player.appendChild(player_difficulty)
-    list.appendChild(player)
+        let player = document.createElement("tr")
+        let player_username = document.createElement("td")
+        let player_points = document.createElement("td")
+        let player_difficulty = document.createElement("td")
+        player_username.innerText = data[i]['screen_name']
+        player_points.innerText = data[i]['highscores']
+        player_difficulty.innerText = data[i]['difficulty']
+        player.appendChild(player_username)
+        player.appendChild(player_points)
+        player.appendChild(player_difficulty)
+        list.appendChild(player)
     }
 }
 let code = highscore()

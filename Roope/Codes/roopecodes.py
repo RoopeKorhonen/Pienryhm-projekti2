@@ -17,7 +17,6 @@ def connect_db():
 connection = connect_db()
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/get_highscores/')
 def get_highscores():
     score_database = "SELECT screen_name, highscores, difficulty FROM game ORDER BY highscores DESC LIMIT 5;"
@@ -43,7 +42,7 @@ def get_highscores():
         return {"Error": "No results. (Invalid sql code)"}
 @app.route('/get_full_highscores/')
 def get_full_highscores():
-    score_database = "SELECT screen_name, highscores, difficulty FROM game ORDER BY highscores;"
+    score_database = "SELECT screen_name, highscores, difficulty FROM game ORDER BY highscores DESC;"
     cursor = connection.cursor()
     cursor.execute(score_database)
     result_set = cursor.fetchall()
@@ -66,4 +65,5 @@ def get_full_highscores():
         return {"Error": "No results. (Invalid sql code)"}
 
 if __name__ == '__main__':
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
