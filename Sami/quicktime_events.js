@@ -12,9 +12,63 @@ const questions = [
     },
 
     {
-        question: 'The biggest passenger-airplane model is...?',
+        question: 'The biggest passenger-airplane model is...',
         correct_answer: 'Airbus-380',
         wrong_answer: 'Boeing 747'
+    },
+
+    {
+        question: 'The sum of -5 + 7 is...',
+        correct_answer: '2',
+        wrong_answer: '-2'
+    },
+
+    {
+        question: 'The approximate altitude for passenger-airplanes to fly at is...',
+        correct_answer: '11km',
+        wrong_answer: '10km'
+    },
+
+    {
+        question: 'The distance of the moon from earth is...',
+        correct_answer: '384 400km',
+        wrong_answer: '121 200km'
+    },
+
+    {
+        question: 'How many meters per second does Airbus-380 travel at maximum speed?',
+        correct_answer: '329 m/s',
+        wrong_answer: '1300 m/s'
+    },
+
+    {
+        question: 'How many seconds is in one hour?',
+        correct_answer: '3600 seconds',
+        wrong_answer: '36 000 seconds'
+    },
+
+    {
+        question: 'The multipliction of 10*11 is...',
+        correct_answer: '110',
+        wrong_answer: '111'
+    },
+
+    {
+        question: 'The square of 49 is...',
+        correct_answer: '7',
+        wrong_answer: '8'
+    },
+
+    {
+        question: 'The real time amount of airplanes in the air right now is estimated to be around at...',
+        correct_answer: '8000',
+        wrong_answer: '2000'
+    },
+
+    {
+        question: 'Flying from Helsinki to Newyork will approximately result co2 fumes per person... ',
+        correct_answer: '500g of co2',
+        wrong_answer: '1kg of co2'
     },
 
 ];
