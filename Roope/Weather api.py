@@ -25,20 +25,24 @@ def get_weather():
     API_key = ("14112fd30bc018d0c6c3c1a190ffbb3f")
     address = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_key}&units=metric"
     answer = requests.get(address).json()
+    desc = answer["weather"]
+    weather = desc[0]["description"]
+    wind_speed = answer["wind"]["speed"]
+    temperature = answer["main"]["temp"]
+    weather_list = []
+    weather_info = {
+        'temperature': temperature,
+        'windspeed': wind_speed,
+        'description': weather,
+    }
+    weather_list.append(weather_info)
+    print(weather)
     print(answer["main"]["temp"])
+    print(wind_speed)
 
-    return answer
+    return weather_list
+
+
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
-temperature = str(answer["main"]["temp"])
-    windspeed = answer["wind"]["speed"]
-    description = str(answer["weather"]["description"])
-    weather_list = []
-    weather_info = {
-        'temperature' : temperature,
-        'windspeed' : windspeed,
-        'description' : description,
-    }
-    weather_list.append(weather_info)
-    print(weather_list)
