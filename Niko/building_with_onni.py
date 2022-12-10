@@ -122,8 +122,8 @@ def fly_to():
     return json_data
 
 @app.route('/airport/<icao>')
-def airport():
-    response = Airport.get_airport()
+def airport(icao):
+    response = Airport.get_airport(icao)
     return response
 
 
