@@ -119,19 +119,14 @@ const questions = [
         wrong_answer: '1 in 255 million'
     },
 
+    {
+        question: 'How long does it take to directly fly with a commercial airplane from Helsinki to Australia?',
+        correct_answer: '19 hours and 23 minutes',
+        wrong_answer: '11 hours and 12 minutes'
+    },
+
 ];
 
-
-
-//Toinen funktio quickTime:n ylle, joka on ajastin kysymyksille.
-
-function timeIsUp(){
-    alert("Time is up, penalty has been added to your co2 fuel.")
-    //tähän -200 co2 komento, joka päivittää tiedot.
-    modal.style.display = "none"
-}
-
-//Kun lento tapahtuu, niin tulee kutsu tähän funktioon
 function quicktime() {
     if (Math.random() < 1 / 3) {
 
@@ -163,8 +158,8 @@ function quicktime() {
                 //tähän -200 co2 komento, joka päivittää tiedot.
                 modal.style.display = "none"
                 clearInterval(timer);
-            }}, 1000);
-
+            }
+        }, 1000);
 
 
         let button_rand = Math.floor(Math.random() * 2)
@@ -209,6 +204,12 @@ function quicktime() {
 
         })
 
+        function timeIsUp() {
+            alert("Time is up, penalty has been added to your co2 fuel.")
+            //tähän -200 co2 komento, joka päivittää tiedot.
+            modal.style.display = "none"
+        }
+
         return question_text
 
 
@@ -216,7 +217,5 @@ function quicktime() {
 
 }
 
-
 quicktime()
 
-//Kaikki toimii
