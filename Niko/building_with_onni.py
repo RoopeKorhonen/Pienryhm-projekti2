@@ -101,7 +101,6 @@ class Airport:
             return {"Error": "No results. (Invalid ICAO code)"}
 
     def distanceTo(self, target):
-
         coords_1 = (self.latitude, self.longitude)
         coords_2 = (target.latitude, target.longitude)
         dist = distance.distance(coords_1, coords_2).km
