@@ -218,3 +218,5 @@ function quicktime() {
 
 
 quicktime()
+
+//Kaikki toimii
