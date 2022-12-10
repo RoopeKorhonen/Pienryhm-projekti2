@@ -20,7 +20,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='',
+        password='gutpo80',
         autocommit=True
     )
 
@@ -97,8 +97,6 @@ class Airport:
         result_set = cursor.fetchall()
 
         result = list(map(list, zip(*result_set)))
-        print(result[0])
-        print(result[1])
 
         if cursor.rowcount > 0:
             return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
@@ -128,9 +126,9 @@ def fly_to():
     print("*** Called flyto endpoint ***")
     return json_data
 
-@app.route('/airport/<icao>')
-def airport(icao):
-    response = Airport.get_airport()
+@app.route('/airport/<self>')
+def airport(self):
+    response = Airport.get_airport(self)
     return response
 
 
