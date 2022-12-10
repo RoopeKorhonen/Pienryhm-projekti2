@@ -67,8 +67,8 @@ const questions = [
 
     {
         question: 'Flying from Helsinki to Newyork will approximately result co2 fumes per person... ',
-        correct_answer: '500g of co2',
-        wrong_answer: '1kg of co2'
+        correct_answer: '1kg of co2',
+        wrong_answer: '500g of co2'
     },
 
     {
@@ -84,9 +84,9 @@ const questions = [
     },
 
     {
-        question: 'How many passengers can travel with an A380?',
-        correct_answer: '853 passengers',
-        wrong_answer: '1378 passengers'
+        question: 'When was the first flight flown with Airbus-380?',
+        correct_answer: 'In the year 2005',
+        wrong_answer: 'In the year 2010'
     },
 
     {
@@ -108,9 +108,9 @@ const questions = [
     },
 
     {
-        question: 'What does G-forces indicate?',
-        correct_answer: 'The force of gravity focusing on a target.',
-        wrong_answer: '2333km / hour'
+        question: 'What is the approximate chance of an airplane crash occurring?',
+        correct_answer: '1 in 1.2 million',
+        wrong_answer: '1 in 500 000'
     },
 
 ];
