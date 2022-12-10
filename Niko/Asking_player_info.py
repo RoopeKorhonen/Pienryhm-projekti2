@@ -44,4 +44,5 @@ def player_info(name, difficulty):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(use_reloader=True, host='127.0.0.1', port=5000)
+
