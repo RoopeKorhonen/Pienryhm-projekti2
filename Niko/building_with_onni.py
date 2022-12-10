@@ -29,7 +29,6 @@ def connect_db():
 connection = connect_db()
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def fly(id, dest, consumption=0):
@@ -134,10 +133,7 @@ def airport(icao):
     return response
 
 
-
-
-
-
-
 if __name__ == '__main__':
+    app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
+
