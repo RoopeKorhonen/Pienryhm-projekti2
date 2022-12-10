@@ -20,7 +20,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='',
+        password='gutpo80',
         autocommit=True
     )
 
@@ -53,8 +53,8 @@ class Game:
             "screen_name": player,
             "difficulty": 1,
             "co2": {
-                "consumed": config.co2_initial,
-                "budget": config.co2_budget
+                "consumed": 0,
+                "budget": 5000
             },
             "previous_location": ""
 
@@ -78,16 +78,13 @@ class Game:
 
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
-    def __init__(self, ident, longitude, latitude, screen_name):
+    def __init__(self, ident, longitude, latitude, name, municipality):
         self.ident = ident
-        self.screen_name = screen_name
+        self.name = name
         self.latitude = float(latitude)
         self.longitude = float(longitude)
-        sql = "SELECT  latitude_deg, longitude_deg FROM Airport WHERE ident='" + ident + "'"
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        return result
+        self.municipality = municipality
+
 
     def get_airport(self):
         sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
@@ -96,8 +93,6 @@ class Airport:
         result_set = cursor.fetchall()
 
         result = list(map(list, zip(*result_set)))
-        print(result[0])
-        print(result[1])
 
         if cursor.rowcount > 0:
             return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
@@ -129,7 +124,7 @@ def fly_to():
 
 @app.route('/airport/<icao>')
 def airport(icao):
-    response = Airport.get_airport()
+    response = Airport.get_airport(icao)
     return response
 
 
