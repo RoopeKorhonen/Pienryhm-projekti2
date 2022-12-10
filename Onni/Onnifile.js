@@ -49,35 +49,49 @@ const map = L.map('map')
     navigator.geolocation.getCurrentPosition(success, error, options);
 
     let marker = ''
+    const airports = L.featureGroup().addTo(map);
     async function getAirport(){
         try{
         const response = await fetch('http://127.0.0.1:5000/airport/self');
         const data = await response.json();
+        airports.clearLayers();
 
         for (let i = 0; i !== data.latitude_deg.length; i++){
 
-            let icao = data.ident[i]
-            let name = data.name[i]
-            let lat = data.latitude_deg[i]
-            let long = data.longitude_deg[i]
+            let icao = data.ident[i];
+            let name = data.name[i];
+            let active = false;
+            let lat = data.latitude_deg[i];
+            let long = data.longitude_deg[i];
             console.log(name, lat, long)
 
             marker = L.marker([lat, long]).addTo(map)
+            airports.addLayer(marker)
             //marker.bindPopup('Airport: ' + name + " Icao: " + icao)
-
-            const popupContent = document.createElement('div')
-            const goButton = document.createElement('button')
-            const h2text = document.createElement('h2')
-            h2text.innerText = name
-            goButton.innerText = 'Fly here'
-            goButton.classList.add('button')
-            popupContent.append(goButton)
-            popupContent.append(h2text)
-            goButton.addEventListener('click', function () {
-                console.log(icao)
-            });
-            marker.bindPopup(popupContent)
+            if (active === false) {
+                const popupContent = document.createElement('div')
+                const goButton = document.createElement('button')
+                const h2text = document.createElement('h2')
+                h2text.innerText = name
+                goButton.innerText = 'Fly here'
+                goButton.classList.add('button')
+                popupContent.append(goButton)
+                popupContent.append(h2text)
+                goButton.addEventListener('click', function () {
+                    console.log(icao)
+                    active = true
+                    popupContent.innerText = 'You are here: ' + name
+                    marker.setPopupContent(popupContent)
+                });
+                marker.bindPopup(popupContent)
+            } else {
+                marker.bindPopup('You are here')
+            }
         }
+
+        /* note to self: lentokentät jotka luodaan alussa menee erikoiseen JSONiin jota tämä JS lukee
+            sitten kun pelaaja lentää joihinkin niistä niin lentokentän active bool muutuu trueksi
+            ja sitten falseksi kun he lentävät pois sieltä*/
 
         console.log('result', data);
         //renderResult(data);
