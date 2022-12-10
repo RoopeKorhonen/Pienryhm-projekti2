@@ -71,6 +71,12 @@ const questions = [
         wrong_answer: '1kg of co2'
     },
 
+    {
+        question: 'The top speed of Usain Bolt is... ',
+        correct_answer: '37.6km / hour',
+        wrong_answer: '54.2km / hour'
+    },
+
 ];
 
 
