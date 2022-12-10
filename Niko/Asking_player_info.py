@@ -18,31 +18,14 @@ def connect_db():
         password='',
         autocommit=True
     )
+class Player:
+    def __init__(self, name, difficulty,):
+        self.name = name
+        self.difficulty = difficulty
+        self.co2_budget = 50000
+        self.highscores = 0
+        self.location = "EFHK"
 
-class Game:
-    class Game:
-
-        def __init__(self, loc, consumption, player=None, ):
-            self.status = {}
-            self.location = []
-            self.status = {
-                "high_scores": 0,
-                "name": None,
-                "difficulty": None,
-                "co2": {
-                    "consumed": 0,
-                    "budget": 50000
-                },
-                "previous_location": ""
-
-            }
-            self.location.append(Airport(loc, True))
-            sql = "INSERT INTO Game VALUES ('" + self.status["id"] + "', " + str(self.status["co2"]["consumed"])
-            sql += ", " + str(self.status["co2"]["budget"]) + ", '" + loc + "', '" + self.status["name"]
-            sql += "', '" + str(self.status["highscores"]) + "', '" + str(self.status["difficulty"]) + "')"
-            print(sql)
-            cursor = connection.cursor()
-            cursor.execute(sql)
 
 
 connection = connect_db()
@@ -56,10 +39,8 @@ app = Flask(__name__)
 
 @app.route('/player_info/<name>/<difficulty>')
 def player_info(name, difficulty):
-    player_name = name
-    difficulty_level = difficulty
-    return
-
+    player = Player(name, difficulty,)
+    return player
 
 
 if __name__ == '__main__':
