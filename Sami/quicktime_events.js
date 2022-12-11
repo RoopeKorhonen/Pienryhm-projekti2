@@ -125,6 +125,24 @@ const questions = [
         wrong_answer: '11 hours and 12 minutes'
     },
 
+    {
+        question: 'How much does a fully loaded Airbus-380 weight?',
+        correct_answer: '560 000kg',
+        wrong_answer: '55 000kg'
+    },
+
+    {
+        question: 'What is the length of an Airbus-380?',
+        correct_answer: '73 meters',
+        wrong_answer: '51 meters'
+    },
+
+    {
+        question: 'Which of the following is the safest airline currently in 2022?',
+        correct_answer: 'Air New Zealand',
+        wrong_answer: 'Finnair'
+    },
+
 ];
 
 function quicktime() {

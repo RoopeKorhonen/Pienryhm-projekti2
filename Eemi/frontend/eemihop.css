@@ -6,20 +6,54 @@ body {
   background-size: cover;
   overflow: hidden;
 }
-.headline {
+nav {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    height: 5em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+nav img {
+   width: 5em;
+   height: 5em;
+   flex: 1;
+}
+
+.nav-image-div {
+    justify-content: flex-start;
+    float: right;
+}
+
+.nav-spacer-div {
+    flex: 2;
+}
+
+.nav-links-div{
+    justify-content: flex-end;
+    float: right;
+    flex: 1;
     text-align: center;
-    z-index: 10;
-    margin-top: 40px;
-    font-size: 35px;
+    line-height: 5em;
 }
-.container {
-  height: 70vh;
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  margin-left: 360px;
+
+.nav-links-div div {
+    display: flex;
+    justify-content: end;
 }
-.container h1
+
+.nav-links-div div a {
+    text-decoration: none;
+    color: black;
+    padding-right: 4em;
+    padding-left: 4em;
+    text-align: center;
+}
+.center-div {
+    margin-top: 10em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
