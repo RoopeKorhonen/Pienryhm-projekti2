@@ -69,7 +69,7 @@ const map = L.map('map')
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
                 const h2text = document.createElement('h2');
-                h2text.innerText = airport.name + " Active: " + airport.active;
+                h2text.innerText = airport.name;
                 goButton.innerText = 'Fly here';
                 goButton.classList.add('button');
                 popupContent.append(goButton);
