@@ -49,45 +49,74 @@ const map = L.map('map')
     navigator.geolocation.getCurrentPosition(success, error, options);
 
     let marker = ''
+    let airport_list = {airports:[]}
     const airports = L.featureGroup().addTo(map);
     async function getAirport(){
         try{
         const response = await fetch('http://127.0.0.1:5000/airport/self');
         const data = await response.json();
+
+        //airport_list = data
         airports.clearLayers();
 
         for (let i = 0; i !== data.latitude_deg.length; i++){
 
             let icao = data.ident[i];
             let name = data.name[i];
-            let active = false;
+            let active = false
             let lat = data.latitude_deg[i];
             let long = data.longitude_deg[i];
-            console.log(name, lat, long)
+            //console.log(name, lat, long)
 
-            marker = L.marker([lat, long]).addTo(map)
+            airport_list.airports.push({name: name, ident: icao, latitude_deg: lat, longitude_deg: long, active: active})
+
+            marker = L.marker([lat, long], active).addTo(map)
+            //console.log(marker)
             airports.addLayer(marker)
             //marker.bindPopup('Airport: ' + name + " Icao: " + icao)
             if (active === false) {
-                const popupContent = document.createElement('div')
-                const goButton = document.createElement('button')
-                const h2text = document.createElement('h2')
-                h2text.innerText = name
-                goButton.innerText = 'Fly here'
-                goButton.classList.add('button')
-                popupContent.append(goButton)
-                popupContent.append(h2text)
+                const popupContent = document.createElement('div');
+                //const activePopUp = 'You are here:' + name;
+                const goButton = document.createElement('button');
+                const h2text = document.createElement('h2');
+                h2text.innerText = name + ' Active: ' + active;
+                goButton.innerText = 'Fly here';
+                goButton.classList.add('button');
+                popupContent.append(goButton);
+                popupContent.append(h2text);
+
+                let popupInfo = popupContent
+
+
+                const currentContent = document.createElement('div');
+                const activeText = document.createElement('h2');
+                currentContent.append(activeText)
+                let currentInfo = currentContent
+
                 goButton.addEventListener('click', function () {
-                    console.log(icao)
-                    active = true
-                    popupContent.innerText = 'You are here: ' + name
-                    marker.setPopupContent(popupContent)
+                    console.log(active)
+                    console.log(airport_list)
+                    let current = icao
+                    airports.clearLayers();
+
+                    for (let airport of airport_list.airports){
+                        console.log(current)
+                        if (airport.ident === current){
+                            marker = L.marker([airport.latitude_deg, airport.longitude_deg], active).addTo(airports)
+                            marker.bindPopup(currentInfo)
+                        }
+                        else{
+                            marker = L.marker([airport.latitude_deg, airport.longitude_deg], active).addTo(airports)
+                            marker.bindPopup(popupInfo)
+                        }
+                    }
                 });
                 marker.bindPopup(popupContent)
             } else {
                 marker.bindPopup('You are here')
             }
         }
+        console.log(airport_list)
 
         /* note to self: lentokentät jotka luodaan alussa menee erikoiseen JSONiin jota tämä JS lukee
             sitten kun pelaaja lentää joihinkin niistä niin lentokentän active bool muutuu trueksi
