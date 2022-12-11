@@ -45,6 +45,11 @@ const map = L.map('map')
             let long = data.longitude_deg[i];
             //console.log(name, lat, long)
 
+            if (i === 99){
+                current_airport = data.ident[i]
+                console.log('active airport found ' + name)
+            }
+
             airport_list.airports.push({name: name, ident: icao, latitude_deg: lat,
                 longitude_deg: long, active: active})
             //marker.bindPopup('Airport: ' + name + " Icao: " + icao)
@@ -56,15 +61,20 @@ const map = L.map('map')
         }
     }
 
+    /* Store the ICAO code of the airport the player is currently at,
+    this will determine which airport will be marked as "active" after the refresh*/
     let current_airport
 
     async function generateAirports(){
+        console.log(airport_list)
         airports.clearLayers();
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
             if (airport.ident === current_airport) {
-                marker.bindPopup('You are here ' + airport.name)
-                console.log('current airport is ' + airport.name)
+                airport.active = true;
+                marker.bindPopup('You are here ' + airport.name);
+                marker.openPopup();
+                console.log('current airport is ' + airport.name);
             } else{
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
