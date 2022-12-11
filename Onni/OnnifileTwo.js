@@ -52,7 +52,6 @@ const map = L.map('map')
 
             airport_list.airports.push({name: name, ident: icao, latitude_deg: lat,
                 longitude_deg: long, active: active})
-            //marker.bindPopup('Airport: ' + name + " Icao: " + icao)
         }
         generateAirports()
         return data
