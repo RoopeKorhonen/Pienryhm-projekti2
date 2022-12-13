@@ -22,7 +22,7 @@ class Player:
         self.difficulty = difficulty
         self.co2_budget = 50000
         self.highscores = 0
-        self.location = "EFHK"
+        self.location = ""
 
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
@@ -35,7 +35,7 @@ class Airport:
 
 
     def get_airport(self):
-        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
+        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport WHERE name like '%airport%' order by rand() limit 250"
         cursor = connection.cursor()
         cursor.execute(sql)
         result_set = cursor.fetchall()
@@ -73,8 +73,10 @@ def player_info(name, difficulty):
     player = Player(name, difficulty)
     player_info_list = []
     result = {
-        "Name": player.name,
-        "Difficulty": player.difficulty,
+        "name": player.name,
+        "difficulty": player.difficulty,
+        "co2_budjet": player.co2_budget,
+        "points": player.highscores,
     }
     print(result)
     player_info_list.append(result)

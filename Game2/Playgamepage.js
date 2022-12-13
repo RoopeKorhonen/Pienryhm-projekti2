@@ -8,18 +8,37 @@ async function player_info(){
         const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
         const data = await response.json();
         console.log("Data info",data)
-        append(data)
+        append_info(data)
         return data;
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
 }
-  player_info()
+function append_info(datax){
+    console.log("Appendi sisällä",datax)
+    let list = document.getElementById('player_info');
+    for(let i = 0; i < 1; i++){
+        let player = document.createElement("tr")
+        let player_username = document.createElement("td")
+        let player_points = document.createElement("td")
+        let player_difficulty = document.createElement("td")
+        let player_budjet = document.createElement("td")
+        player_username.innerText = datax['name']
+        player_points.innerText = datax['points']
+        player_difficulty.innerText = datax['difficulty']
+        player_budjet.innerText = datax['co2_budjet']
+        player.appendChild(player_username)
+        player.appendChild(player_budjet)
+        player.appendChild(player_points)
+        player.appendChild(player_difficulty)
+        list.appendChild(player)
+    }
+}
+let codes = player_info()
 
 target = document.getElementById('lol')
 
 const map = L.map('map')
-
 
     const options = {
       enableHighAccuracy: true,
@@ -59,6 +78,7 @@ const map = L.map('map')
 
             let icao = data.ident[i];
             let name = data.name[i];
+            let municipality = data.municipality[i]
             let active = false
             let lat = data.latitude_deg[i];
             let long = data.longitude_deg[i];
@@ -69,7 +89,7 @@ const map = L.map('map')
                 console.log('active airport found ' + name)
             }
 
-            airport_list.airports.push({name: name, ident: icao, latitude_deg: lat,
+            airport_list.airports.push({name: name, ident: icao, municipality: municipality, latitude_deg: lat,
                 longitude_deg: long, active: active})
         }
         generateAirports()
@@ -113,4 +133,6 @@ const map = L.map('map')
             }
         }
     }
-    let code = getAirports()
+
+    getAirports()
+
