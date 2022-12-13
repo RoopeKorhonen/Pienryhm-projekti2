@@ -24,6 +24,10 @@ function append_info(datax){
         let player_difficulty = document.createElement("td")
         let player_budjet = document.createElement("td")
         player_username.innerText = datax['name']
+        let player_points_name = datax['points']
+        let player_co2_budget_name = datax['co2_budjet']
+        let player_name = datax['name']
+        let player_difficulty_name = datax['difficulty']
         player_points.innerText = datax['points']
         player_difficulty.innerText = datax['difficulty']
         player_budjet.innerText = datax['co2_budjet']
@@ -32,6 +36,8 @@ function append_info(datax){
         player.appendChild(player_points)
         player.appendChild(player_difficulty)
         list.appendChild(player)
+        console.log(player_co2_budget_name)
+        return player_co2_budget_name
     }
 }
 async function get_event() {
@@ -45,9 +51,9 @@ async function get_event() {
         console.log('Verkkovirhe: ', error)
     }
 }
-
 function play_event(question) {
-    if (Math.random() < 1 / 3) {
+    console.log(question)
+    if (Math.random() < 2 / 3) {
         const modal = document.getElementById("myModal")
         modal.style.display = "block"
         let right_answer = ''
@@ -132,9 +138,19 @@ function play_event(question) {
     }
 
 }
+// Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää
+async function calculate_co2_budget(player_budget) {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget + '');
+        const data = await response.json();
+        console.log("Laskettu budget info",data)
+        return data;
+    } catch (error) {
+        console.log('Verkkovirhe: ', error)
+    }
+}
 
 let codes = player_info()
-
 target = document.getElementById('lol')
 
 const map = L.map('map')
@@ -230,6 +246,8 @@ const map = L.map('map')
 
                 goButton.addEventListener('click', function () {
                     get_event()
+                    //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
+                    // calculate_co2_budget(codes)
                     current_airport = airport
                     console.log(current_airport)
                     generateAirports();
