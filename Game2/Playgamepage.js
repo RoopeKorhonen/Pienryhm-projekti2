@@ -36,7 +36,7 @@ function append_info(datax){
         player.appendChild(player_points)
         player.appendChild(player_difficulty)
         list.appendChild(player)
-        console.log(player_co2_budget_name)
+        console.log("Playerin budgetti", player_co2_budget_name)
         return player_co2_budget_name
     }
 }
@@ -141,8 +141,13 @@ function play_event(question) {
 // Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää pisteitte laskuu
 async function calculate_co2_budget(player_budget) {
     try {
+        let player_budget_open = await player_budget.then(function(result) {
+            console.log("promise auki juttu", result)
+            return result
+})
+        console.log("Playerbudget auki", player_budget_open)
         console.log("Playerin budgetti ennen laskentaa",player_budget)
-        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget + '');
+        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget_open['co2_budjet'] + '');
         const data = await response.json();
         console.log("Laskettu budget info",data)
         return data;
@@ -248,7 +253,7 @@ const map = L.map('map')
                 goButton.addEventListener('click', function () {
                     get_event()
                     //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
-                    // calculate_co2_budget(codes)
+                    let new_budget = calculate_co2_budget(codes)
                     current_airport = airport
                     console.log(current_airport)
                     generateAirports();
