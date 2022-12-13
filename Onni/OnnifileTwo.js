@@ -111,7 +111,7 @@ const map = L.map('map')
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    current_airport = airport.ident
+                    current_airport = airport
                     console.log(current_airport)
                     generateAirports();
                 });
