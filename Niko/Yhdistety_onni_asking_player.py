@@ -65,6 +65,7 @@ class Airport:
         if cursor.rowcount > 0:
             return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
                     "longitude_deg": result[4]}
+            get_question()
         else:
             return {"Error": "No results. (Invalid ICAO code)"}
 
@@ -79,15 +80,6 @@ class Airport:
         consumption = km / (1.69 * 3)
         return consumption
 
-@app.route('/fly_to/<icao>')
-def fly_to():
-    args = request.args
-    id = args.get("game")
-    dest = args.get("dest")
-    consumption = args.get("consumption")
-    json_data = fly(id, dest, consumption)
-    print("*** Called flyto endpoint ***")
-    return json_data
 
 @app.route('/airport/<icao>')
 def airport(icao):
@@ -95,6 +87,20 @@ def airport(icao):
     return response
 
 
+def get_question():
+    sql = f"SELECT question, right_answer, wrong_answer FROM questions order by rand() limit 1;"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    print(result)
+
+    if cursor.rowcount > 0:
+        return {"question": result[0][0], "right_answer": result[0][1], "wrong_answer": result[0][2]}
+    else:
+        return {"Error": "No results."}
+
+
+get_question()
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
