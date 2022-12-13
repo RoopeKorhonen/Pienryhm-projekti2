@@ -1,8 +1,6 @@
 import json
-import os
 from geopy import distance
 import mysql.connector
-from dotenv import load_dotenv
 from flask import Flask, request
 from flask_cors import CORS
 import string, random

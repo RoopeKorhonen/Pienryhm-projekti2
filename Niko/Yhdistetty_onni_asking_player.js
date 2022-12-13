@@ -16,12 +16,10 @@ async function player_info(){
 }
   player_info()
 
-let target = document.getElementById('lol')
+target = document.getElementById('lol')
 
 const map = L.map('map')
-/* for (let i = 0; i <= 10; i++){
-    target.innerText += 'ei vidddu miden ebin juddu :DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-} */
+
 
     const options = {
       enableHighAccuracy: true,
@@ -29,33 +27,15 @@ const map = L.map('map')
       maximumAge: 0,
     };
 
-    // A function that is called when location information is retrieved
     function success(pos) {
       const crd = pos.coords;
-
-      // Printing location information to the console
-      console.log('Your current position is:');
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
 
       // Use the leaflet.js library to show the location on the map (https://leafletjs.com/)
       map.setView([crd.latitude, crd.longitude], 1);
 
-      /* for (let i = 0; i <= 10; i++){
-          let lat = Math.floor(Math.random() * 700)
-          let long = Math.floor(Math.random() * 600)
-          L.marker([lat, long]).addTo(map).bindPopup(i)
-          console.log(i, lat, long)
-      } */
-
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);
-
-      L.marker([crd.latitude, crd.longitude]).addTo(map)
-      .bindPopup('I am here.')
-      .openPopup();
     }
 
     // Function to be called if an error occurs while retrieving location information
@@ -67,56 +47,71 @@ const map = L.map('map')
     navigator.geolocation.getCurrentPosition(success, error, options);
 
     let marker = ''
+    let airport_list = {airports:[]}
     const airports = L.featureGroup().addTo(map);
-    async function getAirport(){
+
+    async function getAirports(){
         try{
         const response = await fetch('http://127.0.0.1:5000/airport/self');
         const data = await response.json();
-        airports.clearLayers();
 
         for (let i = 0; i !== data.latitude_deg.length; i++){
 
             let icao = data.ident[i];
             let name = data.name[i];
-            let active = false;
+            let active = false
             let lat = data.latitude_deg[i];
             let long = data.longitude_deg[i];
-            console.log(name, lat, long)
+            //console.log(name, lat, long)
 
-            marker = L.marker([lat, long]).addTo(map)
-            airports.addLayer(marker)
-            //marker.bindPopup('Airport: ' + name + " Icao: " + icao)
-            if (active === false) {
-                const popupContent = document.createElement('div')
-                const goButton = document.createElement('button')
-                const h2text = document.createElement('h2')
-                h2text.innerText = name
-                goButton.innerText = 'Fly here'
-                goButton.classList.add('button')
-                popupContent.append(goButton)
-                popupContent.append(h2text)
-                goButton.addEventListener('click', function () {
-                    console.log(icao)
-                    active = true
-                    popupContent.innerText = 'You are here: ' + name
-                    marker.setPopupContent(popupContent)
-                });
-                marker.bindPopup(popupContent)
-            } else {
-                marker.bindPopup('You are here')
+            if (i === 99){
+                current_airport = data.ident[i]
+                console.log('active airport found ' + name)
             }
+
+            airport_list.airports.push({name: name, ident: icao, latitude_deg: lat,
+                longitude_deg: long, active: active})
         }
-
-        /* note to self: lentokentät jotka luodaan alussa menee erikoiseen JSONiin jota tämä JS lukee
-            sitten kun pelaaja lentää joihinkin niistä niin lentokentän active bool muutuu trueksi
-            ja sitten falseksi kun he lentävät pois sieltä*/
-
-        console.log('result', data);
-        //renderResult(data);
+        generateAirports()
         return data
         } catch (error){
             console.log('Verkkovirhe: ', error)
         }
     }
 
-    getAirport()
+    /* Store the ICAO code of the airport the player is currently at,
+    this will determine which airport will be marked as "active" after the refresh*/
+    let current_airport
+
+    async function generateAirports(){
+        console.log(airport_list)
+        airports.clearLayers();
+        for (let airport of airport_list.airports){
+            const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
+            if (airport.ident === current_airport) {
+                airport.active = true;
+                marker.bindPopup('You are here ' + airport.name);
+                marker.openPopup();
+                console.log('current airport is ' + airport.name);
+            } else{
+                const popupContent = document.createElement('div');
+                const goButton = document.createElement('button');
+                const h2text = document.createElement('h2');
+                h2text.innerText = airport.name;
+                goButton.innerText = 'Fly here';
+                goButton.classList.add('button');
+                popupContent.append(goButton);
+                popupContent.append(h2text);
+
+                goButton.addEventListener('click', function () {
+                    current_airport = airport.ident
+                    console.log(current_airport)
+                    generateAirports();
+                });
+
+                marker.bindPopup(popupContent);
+            }
+        }
+    }
+
+    getAirports()
