@@ -25,6 +25,11 @@ class Player:
         self.location = "EFHK"
 
 
+    def name_difficulty(self):
+        sql = "INSERT INTO Game VALUES name, difficulty, highscores"
+        return sql
+
+
 
 connection = connect_db()
 app = Flask(__name__)
@@ -65,7 +70,6 @@ class Airport:
         if cursor.rowcount > 0:
             return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
                     "longitude_deg": result[4]}
-            get_question()
         else:
             return {"Error": "No results. (Invalid ICAO code)"}
 
@@ -100,7 +104,6 @@ def get_question():
         return {"Error": "No results."}
 
 
-get_question()
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
