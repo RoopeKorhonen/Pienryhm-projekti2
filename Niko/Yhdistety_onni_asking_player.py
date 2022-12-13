@@ -79,15 +79,6 @@ class Airport:
         consumption = km / (1.69 * 3)
         return consumption
 
-@app.route('/fly_to/<icao>')
-def fly_to():
-    args = request.args
-    id = args.get("game")
-    dest = args.get("dest")
-    consumption = args.get("consumption")
-    json_data = fly(id, dest, consumption)
-    print("*** Called flyto endpoint ***")
-    return json_data
 
 @app.route('/airport/<icao>')
 def airport(icao):
