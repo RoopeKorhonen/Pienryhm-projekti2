@@ -1,6 +1,6 @@
 'use strict';
 console.log("Program starts")
-async function highscore() {
+async function top5highscore() {
     try {
         const response = await fetch('http://127.0.0.1:5000/get_highscores/');
         const data = await response.json();
@@ -13,7 +13,7 @@ async function highscore() {
 }
 function append(data){
     console.log(data)
-    let list = document.getElementById('highscorelist');
+    let list = document.getElementById('top5highscorelist');
     for(let i = 0; i < data.length; i++){
     let player = document.createElement("tr")
     let player_username = document.createElement("td")
@@ -28,4 +28,4 @@ function append(data){
     list.appendChild(player)
     }
 }
-let code = highscore()
+let code = top5highscore()
