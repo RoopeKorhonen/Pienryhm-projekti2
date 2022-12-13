@@ -1,0 +1,53 @@
+body {
+    background-image: url(https://img.freepik.com/premium-vector/sky-cloud-daily-illustration-with-cartoon-cirrus-cumulus-white-clouds-rays-sun-illustration_1284-62767.jpg?w=2000);
+    background-size: cover;
+    overflow: hidden;
+    font-family: "Lucida Console", Courier, monospace;
+}
+.headline {
+    text-align: center;
+    z-index: 10;
+    margin-top: 35px;
+    font-size: 40px;
+}
+.container {
+  height: 70vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 33.3%;
+  margin-top: 2rem;
+  margin-bottom: 1.25rem;
+}
+.main-menu-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 33.3%;
+}
+.main-menu-options .btn:first-child {
+  margin-right: 10px;
+}
+.btn {
+  background: transparent;
+  width: 100%;
+  padding: .5rem 0;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+  letter-spacing: .025em;
+  cursor: pointer;
+  border: transparent;
+  -webkit-text-stroke: 1px silver;
+}
+.btn:hover {
+  color: rgb(247, 247, 247);
+  -webkit-text-stroke: 2px black;
+}

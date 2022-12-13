@@ -1,4 +1,3 @@
-
 console.log("Program starts")
 async function player_info(){
     let name = prompt("Give player name")
