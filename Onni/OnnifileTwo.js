@@ -1,6 +1,25 @@
+
+console.log("Program starts")
+async function player_info(){
+    let name = prompt("Give player name")
+    let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
+    console.log("Name and difficulty", name, difficulty)
+    try {
+        const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
+        const data = await response.json();
+        console.log("Data info",data)
+        //append(data)
+        return data;
+    } catch (error) {
+        console.log('Verkkovirhe: ', error)
+    }
+}
+  player_info()
+
 target = document.getElementById('lol')
 
 const map = L.map('map')
+
 
     const options = {
       enableHighAccuracy: true,
@@ -40,18 +59,19 @@ const map = L.map('map')
 
             let icao = data.ident[i];
             let name = data.name[i];
-            let municipality = data.municipality[i]
             let active = false
             let lat = data.latitude_deg[i];
             let long = data.longitude_deg[i];
             //console.log(name, lat, long)
 
             if (i === 99){
-                current_airport = data.ident[i]
+                current_airport = {name: name, ident: icao, latitude_deg: lat,
+                longitude_deg: long, active: active}
+                console.log(current_airport)
                 console.log('active airport found ' + name)
             }
 
-            airport_list.airports.push({name: name, ident: icao, municipality: municipality, latitude_deg: lat,
+            airport_list.airports.push({name: name, ident: icao, latitude_deg: lat,
                 longitude_deg: long, active: active})
         }
         generateAirports()
@@ -78,15 +98,20 @@ const map = L.map('map')
             } else{
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
+                const distText = document.createElement('p');
                 const h2text = document.createElement('h2');
                 h2text.innerText = airport.name;
                 goButton.innerText = 'Fly here';
+                let textfordist = await fetch('http://127.0.0.1:5000/distanceLol/' + airport.latitude_deg + '/' + airport.longitude_deg + '/' + current_airport.latitude_deg + '/' + current_airport.longitude_deg)
+                textfordist = await textfordist.json()
+                distText.innerText = textfordist.Distance + ' km';
                 goButton.classList.add('button');
+                popupContent.append(distText)
                 popupContent.append(goButton);
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    current_airport = airport.ident
+                    current_airport = airport
                     console.log(current_airport)
                     generateAirports();
                 });

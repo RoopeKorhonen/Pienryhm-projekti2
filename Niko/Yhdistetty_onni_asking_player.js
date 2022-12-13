@@ -65,7 +65,10 @@ const map = L.map('map')
             //console.log(name, lat, long)
 
             if (i === 99){
-                current_airport = data.ident[i]
+                current_airport = {name: name, ident: icao, latitude_deg: lat,
+                longitude_deg: long, active: active}
+                current_airport = JSON.stringify(current_airport)
+                console.log(current_airport)
                 console.log('active airport found ' + name)
             }
 
@@ -96,9 +99,13 @@ const map = L.map('map')
             } else{
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
+                const distText = document.createElement('p');
                 const h2text = document.createElement('h2');
                 h2text.innerText = airport.name;
                 goButton.innerText = 'Fly here';
+                let textfordist = await fetch('http://127.0.0.1:5000/distanceTo/' + airport.ident + '/' + current_airport);
+                let textdist = await textfordist.json()
+                distText.innerText = textdist
                 goButton.classList.add('button');
                 popupContent.append(goButton);
                 popupContent.append(h2text);
