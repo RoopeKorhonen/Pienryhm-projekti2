@@ -34,6 +34,104 @@ function append_info(datax){
         list.appendChild(player)
     }
 }
+async function get_event() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/get_question/');
+        const data = await response.json();
+        console.log("Event data inffo",data)
+        play_event(data)
+        return data;
+    } catch (error) {
+        console.log('Verkkovirhe: ', error)
+    }
+}
+
+function play_event(question) {
+    if (Math.random() < 1 / 3) {
+        const modal = document.getElementById("myModal")
+        modal.style.display = "block"
+        let right_answer = ''
+        let wrong_answer = ''
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+        let correct = ''
+        let header = document.querySelector('h1');
+        let question_text = question["question"];
+        right_answer = question["right_answer"];
+        wrong_answer = question["wrong_answer"];
+        correct = right_answer
+        header.innerHTML = question_text
+
+        let time = 5;
+        let timerElement = document.getElementById("timer");
+        timerElement.innerHTML = "Time remaining: 5 seconds";
+        //document.body.appendChild(timerElement);
+        let timer = setInterval(function () {
+            time = time - 1;
+            timerElement.innerHTML = "Time remaining: " + time + " seconds";
+            if (time === -1) {
+                alert("Time is up, penalty has been added to your co2 fuel.")
+                //tähän -200 co2 komento, joka päivittää tiedot.
+                modal.style.display = "none"
+                clearInterval(timer);
+            }
+        }, 1000);
+
+
+        let button_rand = Math.floor(Math.random() * 2)
+        if (button_rand === 1) {
+            button1.innerText = right_answer
+            button2.innerText = wrong_answer
+        } else {
+            button1.innerText = wrong_answer
+            button2.innerText = right_answer
+
+        }
+        console.log(question_text)
+        button1.addEventListener('click', function () {
+            let answer = button1.innerText;
+            clearInterval(timer);
+
+            if (answer === correct) {
+                // lisää 100 co2 budjettiin
+
+                console.log("OIKEIN!!!!!!!!!!!!!!")
+                modal.style.display = "none"
+            } else {
+                console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
+                modal.style.display = "none"
+            }
+
+        })
+
+        button2.addEventListener('click', function () {
+            let answer = button2.innerText;
+            clearInterval(timer);
+
+            if (answer === correct) {
+                // lisää 100 co2 budjettiin
+
+                console.log("OIKEIN!!!!!!!!!!!!!!")
+                modal.style.display = "none"
+            } else {
+                console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
+                modal.style.display = "none"
+            }
+
+        })
+
+        function timeIsUp() {
+            alert("Time is up, penalty has been added to your co2 fuel.")
+            //tähän -200 co2 komento, joka päivittää tiedot.
+            modal.style.display = "none"
+        }
+
+        return question_text
+
+
+    }
+
+}
 
 let codes = player_info()
 
@@ -125,6 +223,7 @@ const map = L.map('map')
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
+                    get_event()
                     current_airport = airport.ident
                     console.log(current_airport)
                     generateAirports();

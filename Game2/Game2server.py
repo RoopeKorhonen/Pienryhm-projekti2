@@ -163,7 +163,7 @@ def get_question():
     print(result)
 
     if cursor.rowcount > 0:
-        return {"question": result[0][0], "right_answer": result[0][1], "wrong_answer": result[0][2]}
+        return {"question": result[0], "right_answer": result[1], "wrong_answer": result[2]}
     else:
         return {"Error": "No results."}
 
