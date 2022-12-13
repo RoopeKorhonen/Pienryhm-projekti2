@@ -29,3 +29,4 @@ function append(data){
     }
 }
 let code = highscore()
+

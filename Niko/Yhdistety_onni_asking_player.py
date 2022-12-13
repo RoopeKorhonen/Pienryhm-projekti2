@@ -25,6 +25,11 @@ class Player:
         self.location = "EFHK"
 
 
+    def name_difficulty(self):
+        sql = "INSERT INTO Game VALUES name, difficulty, highscores"
+        return sql
+
+
 
 connection = connect_db()
 app = Flask(__name__)
@@ -87,13 +92,14 @@ def airport(icao):
 
 
 def get_question():
-    sql = f"SELECT question, right_answer, wrong_answer, FROM questions order by rand() limit 1"
+    sql = f"SELECT question, right_answer, wrong_answer FROM questions order by rand() limit 1;"
     cursor = connection.cursor()
     cursor.execute(sql)
-    result = cursor.fetchall()
+    result = cursor.fetchone()
+    print(result)
 
     if cursor.rowcount > 0:
-        return {"question": result[0], "right_answer": result[1], "wrong_answer": result[2],}
+        return {"question": result[0][0], "right_answer": result[0][1], "wrong_answer": result[0][2]}
     else:
         return {"Error": "No results."}
 
