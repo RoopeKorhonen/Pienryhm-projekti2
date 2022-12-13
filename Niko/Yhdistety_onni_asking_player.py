@@ -87,7 +87,7 @@ def airport(icao):
 
 
 def get_question():
-    sql = f"SELECT question, right_answer, wrong_asnwer, FROM questions order by rand() limit 1"
+    sql = f"SELECT question, right_answer, wrong_answer, FROM questions order by rand() limit 1"
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
