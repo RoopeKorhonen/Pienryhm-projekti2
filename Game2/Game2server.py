@@ -16,6 +16,7 @@ def connect_db():
         autocommit=True
     )
 
+
 class Player:
     def __init__(self, name, difficulty,):
         self.name = name
@@ -23,6 +24,10 @@ class Player:
         self.co2_budget = 50000
         self.highscores = 0
         self.location = ""
+
+    def name_difficulty(self):
+        sql = "INSERT INTO Game VALUES name, difficulty, highscores"
+        return sql
 
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
@@ -147,11 +152,20 @@ def get_weather():
         'description': weather,
     }
     weather_list.append(weather_info)
-    print(weather)
-    print(answer["main"]["temp"])
-    print(wind_speed)
-
     return weather_list
+
+@app.route('/get_question/')
+def get_question():
+    sql = f"SELECT question, right_answer, wrong_answer FROM questions order by rand() limit 1;"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    print(result)
+
+    if cursor.rowcount > 0:
+        return {"question": result[0][0], "right_answer": result[0][1], "wrong_answer": result[0][2]}
+    else:
+        return {"Error": "No results."}
 
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'

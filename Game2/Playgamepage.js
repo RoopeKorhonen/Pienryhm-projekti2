@@ -34,6 +34,7 @@ function append_info(datax){
         list.appendChild(player)
     }
 }
+
 let codes = player_info()
 
 target = document.getElementById('lol')
