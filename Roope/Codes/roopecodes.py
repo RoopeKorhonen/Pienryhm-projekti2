@@ -18,6 +18,27 @@ def connect_db():
 connection = connect_db()
 app = Flask(__name__)
 cors = CORS(app)
+
+class Player:
+    def __init__(self, name, difficulty,):
+        self.name = name
+        self.difficulty = difficulty
+        self.co2_budget = 50000
+        self.highscores = 0
+        self.location = "EFHK"
+
+@app.route('/player_info/<name>/<difficulty>/')
+def player_info(name, difficulty):
+    player = Player(name, difficulty)
+    player_info_list = []
+    result = {
+        "Name": player.name,
+        "Difficulty": player.difficulty,
+    }
+    print(result)
+    player_info_list.append(result)
+    return result
+
 @app.route('/get_highscores/')
 def get_highscores():
     score_database = "SELECT screen_name, highscores, difficulty FROM game ORDER BY highscores DESC LIMIT 5;"
