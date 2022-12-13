@@ -1,9 +1,11 @@
-from flask import Flask
-import mysql.connector
-from flask_cors import CORS
 import json
-import requests
-
+from geopy import distance
+import mysql.connector
+from flask import Flask, request
+from flask_cors import CORS
+import string, random
+from airport import Airport
+import config
 
 def connect_db():
     return mysql.connector.connect(
