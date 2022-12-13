@@ -63,10 +63,10 @@ class Airport:
         coords_1 = (self.latitude, self.longitude)
         coords_2 = (target.latitude, target.longitude)
         dist = distance.distance(coords_1, coords_2).km
-        return int(dist)
+        consumption = self.co2_consumption(dist)
+        return int(consumption)
 
     def co2_consumption(self, km):
-        consumption = config.co2_per_flight + km * config.co2_per_km
+        consumption = km / (1.69 * 3)
         return consumption
-
 

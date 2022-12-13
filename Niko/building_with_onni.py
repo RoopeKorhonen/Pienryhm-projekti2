@@ -98,10 +98,9 @@ class Airport:
             return {"name": result[0], "ident": result[1], "municipality": result[2], "latitude_deg": result[3],
                     "longitude_deg": result[4]}
         else:
-            return {"Error": "No results. (Invalid ICAO code)"}
+            return {"Error": "No results."}
 
     def distanceTo(self, target):
-
         coords_1 = (self.latitude, self.longitude)
         coords_2 = (target.latitude, target.longitude)
         dist = distance.distance(coords_1, coords_2).km
@@ -126,6 +125,8 @@ def fly_to():
 def airport(icao):
     response = Airport.get_airport(icao)
     return response
+
+
 
 
 if __name__ == '__main__':
