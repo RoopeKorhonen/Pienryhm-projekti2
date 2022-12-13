@@ -184,7 +184,8 @@ const map = L.map('map')
             //console.log(name, lat, long)
 
             if (i === 99){
-                current_airport = data.ident[i]
+                current_airport = {name: name, ident: icao, latitude_deg: lat,
+                longitude_deg: long, active: active}
                 console.log('active airport found ' + name)
             }
 
@@ -229,7 +230,7 @@ const map = L.map('map')
 
                 goButton.addEventListener('click', function () {
                     get_event()
-                    current_airport = airport.ident
+                    current_airport = airport
                     console.log(current_airport)
                     generateAirports();
                 });
