@@ -215,10 +215,15 @@ const map = L.map('map')
             } else{
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
+                const distText = document.createElement('p');
                 const h2text = document.createElement('h2');
                 h2text.innerText = airport.name;
                 goButton.innerText = 'Fly here';
+                let textfordist = await fetch('http://127.0.0.1:5000/distanceLol/' + airport.latitude_deg + '/' + airport.longitude_deg + '/' + current_airport.latitude_deg + '/' + current_airport.longitude_deg)
+                textfordist = await textfordist.json()
+                distText.innerText = textfordist.Distance + ' km';
                 goButton.classList.add('button');
+                popupContent.append(distText)
                 popupContent.append(goButton);
                 popupContent.append(h2text);
 

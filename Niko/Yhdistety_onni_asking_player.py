@@ -13,7 +13,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='gutpo80',
+        password='moodleroope',
         autocommit=True
     )
 class Player:

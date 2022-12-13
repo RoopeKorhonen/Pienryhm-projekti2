@@ -167,6 +167,15 @@ def get_question():
     else:
         return {"Error": "No results."}
 
+@app.route('/distanceLol/<target>/<target2>/<current>/<current2>')
+def distanceLol(target, target2, current, current2):
+    lol = (target, target2)
+    lmao = (current, current2)
+    dist = distance.distance(lol, lmao).km.__floor__()
+    print(dist)
+    return {"Distance": dist}
+
+
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
