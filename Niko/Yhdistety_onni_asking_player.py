@@ -1,7 +1,7 @@
 import json
 from geopy import distance
 import mysql.connector
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import string, random
 from airport import Airport
@@ -13,7 +13,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='',
+        password='gutpo80',
         autocommit=True
     )
 class Player:
@@ -102,6 +102,14 @@ def get_question():
         return {"question": result[0][0], "right_answer": result[0][1], "wrong_answer": result[0][2]}
     else:
         return {"Error": "No results."}
+
+@app.route('/distanceLol/<target>/<target2>/<current>/<current2>')
+def distanceLol(target, target2, current, current2):
+    lol = (target, target2)
+    lmao = (current, current2)
+    dist = distance.distance(lol, lmao).km.__floor__()
+    print(dist)
+    return {"Distance": dist}
 
 
 if __name__ == '__main__':
