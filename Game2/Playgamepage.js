@@ -1,4 +1,4 @@
-'use strict';
+
 console.log("Program starts")
 async function player_info(){
     let name = prompt("Give player name")
@@ -113,5 +113,4 @@ const map = L.map('map')
             }
         }
     }
-
-    getAirports()
+    let code = getAirports()
