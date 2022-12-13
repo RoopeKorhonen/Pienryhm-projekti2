@@ -12,9 +12,10 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='moodleroope',
+        password='gutpo80',
         autocommit=True
     )
+
 
 class Player:
     def __init__(self, name, difficulty,):
@@ -22,7 +23,11 @@ class Player:
         self.difficulty = difficulty
         self.co2_budget = 50000
         self.highscores = 0
-        self.location = "EFHK"
+        self.location = ""
+
+    def name_difficulty(self):
+        sql = "INSERT INTO Game VALUES name, difficulty, highscores"
+        return sql
 
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
@@ -35,7 +40,7 @@ class Airport:
 
 
     def get_airport(self):
-        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
+        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport WHERE name like '%airport%' order by rand() limit 250"
         cursor = connection.cursor()
         cursor.execute(sql)
         result_set = cursor.fetchall()
@@ -73,8 +78,10 @@ def player_info(name, difficulty):
     player = Player(name, difficulty)
     player_info_list = []
     result = {
-        "Name": player.name,
-        "Difficulty": player.difficulty,
+        "name": player.name,
+        "difficulty": player.difficulty,
+        "co2_budjet": player.co2_budget,
+        "points": player.highscores,
     }
     print(result)
     player_info_list.append(result)
@@ -145,11 +152,29 @@ def get_weather():
         'description': weather,
     }
     weather_list.append(weather_info)
-    print(weather)
-    print(answer["main"]["temp"])
-    print(wind_speed)
-
     return weather_list
+
+@app.route('/get_question/')
+def get_question():
+    sql = f"SELECT question, right_answer, wrong_answer FROM questions order by rand() limit 1;"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    print(result)
+
+    if cursor.rowcount > 0:
+        return {"question": result[0], "right_answer": result[1], "wrong_answer": result[2]}
+    else:
+        return {"Error": "No results."}
+
+@app.route('/distanceLol/<target>/<target2>/<current>/<current2>')
+def distanceLol(target, target2, current, current2):
+    target_coords = (target, target2)
+    current_coords = (current, current2)
+    dist = distance.distance(target_coords, current_coords).km.__floor__()
+    print(dist)
+    return {"Distance": dist}
+
 
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
