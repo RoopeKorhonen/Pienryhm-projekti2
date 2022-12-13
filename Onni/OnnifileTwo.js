@@ -40,6 +40,7 @@ const map = L.map('map')
 
             let icao = data.ident[i];
             let name = data.name[i];
+            let municipality = data.municipality[i]
             let active = false
             let lat = data.latitude_deg[i];
             let long = data.longitude_deg[i];
@@ -50,7 +51,7 @@ const map = L.map('map')
                 console.log('active airport found ' + name)
             }
 
-            airport_list.airports.push({name: name, ident: icao, latitude_deg: lat,
+            airport_list.airports.push({name: name, ident: icao, municipality: municipality, latitude_deg: lat,
                 longitude_deg: long, active: active})
         }
         generateAirports()
