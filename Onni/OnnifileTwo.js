@@ -90,7 +90,7 @@ const map = L.map('map')
         airports.clearLayers();
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
-            if (airport.ident === current_airport) {
+            if (airport.active) {
                 airport.active = true;
                 marker.bindPopup('You are here ' + airport.name);
                 marker.openPopup();
@@ -112,6 +112,7 @@ const map = L.map('map')
 
                 goButton.addEventListener('click', function () {
                     current_airport = airport
+                    current_airport.active = true
                     console.log(current_airport)
                     generateAirports();
                 });
