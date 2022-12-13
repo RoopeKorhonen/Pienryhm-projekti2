@@ -13,7 +13,7 @@ async function top5highscore() {
 }
 function append(data){
     console.log(data)
-    let list = document.getElementById('top5highscorelist');
+    let list = document.getElementById('highscorelist');
     for(let i = 0; i < data.length; i++){
     let player = document.createElement("tr")
     let player_username = document.createElement("td")
