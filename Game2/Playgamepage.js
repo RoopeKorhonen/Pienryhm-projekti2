@@ -138,9 +138,10 @@ function play_event(question) {
     }
 
 }
-// Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää
+// Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää pisteitte laskuu
 async function calculate_co2_budget(player_budget) {
     try {
+        console.log("Playerin budgetti ennen laskentaa",player_budget)
         const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget + '');
         const data = await response.json();
         console.log("Laskettu budget info",data)
