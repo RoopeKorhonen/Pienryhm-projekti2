@@ -12,7 +12,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='moodleroope',
+        password='gutpo80',
         autocommit=True
     )
 
@@ -169,9 +169,9 @@ def get_question():
 
 @app.route('/distanceLol/<target>/<target2>/<current>/<current2>')
 def distanceLol(target, target2, current, current2):
-    lol = (target, target2)
-    lmao = (current, current2)
-    dist = distance.distance(lol, lmao).km.__floor__()
+    target_coords = (target, target2)
+    current_coords = (current, current2)
+    dist = distance.distance(target_coords, current_coords).km.__floor__()
     print(dist)
     return {"Distance": dist}
 
