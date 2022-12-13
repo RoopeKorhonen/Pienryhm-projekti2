@@ -14,18 +14,23 @@ def connect_db():
         autocommit=True
     )
 
+
+
+
 class Game:
 
-    def __init__(self, loc, consumption, player=None, ):
+    def __init__(self, id, loc, consumption, player=None, ):
         self.status = {}
         self.location = []
+        letters = string.ascii_lowercase + string.ascii_uppercase + string.digits
         self.status = {
+            "id": ''.join(random.choice(letters) for i in range(20)),
             "high_scores": 0,
-            "screen_name": None,
-            "difficulty": None,
+            "screen_name": player,
+            "difficulty": 1,
             "co2": {
                 "consumed": 0,
-                "budget": 50000
+                "budget": 5000
             },
             "previous_location": ""
 
@@ -37,10 +42,3 @@ class Game:
         print(sql)
         cursor = config.conn.cursor()
         cursor.execute(sql)
-
-
-
-    def set_location(self, location):
-        sql = "UPDATE Game SET location='" + location.ident + "' WHERE id='" + self.status["id"] + "'"
-        print(sql)
-        return

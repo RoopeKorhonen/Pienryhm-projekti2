@@ -44,53 +44,6 @@ def player_info(name, difficulty):
     return result
 
 
-
-
-def fly(id, dest, consumption=0):
-    game = Game(id, dest, consumption)
-    nearby = game.location[0].get_airport()
-    for a in nearby:
-        game.location.append(a)
-    json_data = json.dumps(game, default=lambda o: o.__dict__, indent=4)
-    return json_data
-
-
-
-class Game:
-
-    def __init__(self, id, loc, consumption, player=None, ):
-        self.status = {}
-        self.location = []
-        letters = string.ascii_lowercase + string.ascii_uppercase + string.digits
-        self.status = {
-            "id": ''.join(random.choice(letters) for i in range(20)),
-            "high_scores": 0,
-            "screen_name": player,
-            "difficulty": 1,
-            "co2": {
-                "consumed": 0,
-                "budget": 5000
-            },
-            "previous_location": ""
-
-        }
-        self.location.append(Airport(loc, True))
-        sql = "INSERT INTO Game VALUES ('" + self.status["id"] + "', " + str(self.status["co2"]["consumed"])
-        sql += ", " + str(self.status["co2"]["budget"]) + ", '" + loc + "', '" + self.status["screen_name"]
-        sql += "', '" + str(self.status["highscores"]) + "', '" + str(self.status["difficulty"]) + "')"
-        print(sql)
-        cursor = config.conn.cursor()
-        cursor.execute(sql)
-
-
-
-    def set_location(self, location):
-        sql = "UPDATE Game SET location='" + location.ident + "' WHERE id='" + self.status["id"] + "'"
-        print(sql)
-        return
-
-
-
 class Airport:
     # lisätty data, jottei tartte jokaista lentokenttää hakea erikseen
     def __init__(self, ident, longitude, latitude, name, municipality):
@@ -140,9 +93,6 @@ def fly_to():
 def airport(icao):
     response = Airport.get_airport(icao)
     return response
-
-
-
 
 
 if __name__ == '__main__':
