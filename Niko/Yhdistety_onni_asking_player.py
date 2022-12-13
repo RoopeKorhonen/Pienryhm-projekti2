@@ -95,6 +95,18 @@ def airport(icao):
     return response
 
 
+def get_question():
+    sql = f"SELECT question, right_answer, wrong_asnwer, FROM questions order by rand() limit 1"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+
+    if cursor.rowcount > 0:
+        return {"question": result[0], "right_answer": result[1], "wrong_answer": result[2],}
+    else:
+        return {"Error": "No results."}
+
+
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)
