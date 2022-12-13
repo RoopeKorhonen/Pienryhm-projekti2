@@ -87,7 +87,7 @@ class Airport:
 
 
     def get_airport(self):
-        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport order by rand() limit 100"
+        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport WHERE name like '%airport%' order by rand() limit 100"
         cursor = connection.cursor()
         cursor.execute(sql)
         result_set = cursor.fetchall()
