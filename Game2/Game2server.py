@@ -1,18 +1,21 @@
 import mysql.connector
 import json
+import os
+from dotenv import load_dotenv
 import requests
 from geopy import distance
 from flask import Flask, request
 from flask_cors import CORS
 
+load_dotenv()
 
 def connect_db():
     return mysql.connector.connect(
-        host='127.0.0.1',
+        host=os.environ.get('HOST'),
         port=3306,
-        database='flight_game',
-        user='root',
-        password='moodleroope',
+        database=os.environ.get('DB_NAME'),
+        user=os.environ.get('DB_USER'),
+        password=os.environ.get('DB_PASS'),
         autocommit=True
     )
 
@@ -40,7 +43,7 @@ class Airport:
 
 
     def get_airport(self):
-        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport WHERE name like '%airport%' order by rand() limit 250"
+        sql = f"SELECT name, ident, municipality, latitude_deg, longitude_deg FROM airport WHERE name like '%airport%' order by rand() limit 100"
         cursor = connection.cursor()
         cursor.execute(sql)
         result_set = cursor.fetchall()
@@ -167,17 +170,19 @@ def get_question():
     else:
         return {"Error": "No results."}
 
-@app.route('/distanceLol/<target>/<target2>/<current>/<current2>')
-def distanceLol(target, target2, current, current2):
+@app.route('/distance_calculation/<target>/<target2>/<current>/<current2>')
+def distance_calculation(target, target2, current, current2):
     target_coords = (target, target2)
     current_coords = (current, current2)
     dist = distance.distance(target_coords, current_coords).km.__floor__()
     print(dist)
     return {"Distance": dist}
 
-@app.route('/calculate_co2_budget/<player_budget>')
-def calculate_co2_budget(player_budget):
-    new_budget = int(player_budget) - 200
+@app.route('/calculate_co2_budget/<player_budget>/<dist>')
+def calculate_co2_budget(player_budget, dist):
+    dist = dist
+    new_budget = int(player_budget) - int(dist) / (1.69 * 3)
+    new_budget = new_budget.__floor__()
     print(f"new budget", new_budget)
     return {"budget": new_budget}
 
