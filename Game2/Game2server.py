@@ -170,17 +170,19 @@ def get_question():
     else:
         return {"Error": "No results."}
 
-@app.route('/distanceLol/<target>/<target2>/<current>/<current2>')
-def distanceLol(target, target2, current, current2):
+@app.route('/distance_calculation/<target>/<target2>/<current>/<current2>')
+def distance_calculation(target, target2, current, current2):
     target_coords = (target, target2)
     current_coords = (current, current2)
     dist = distance.distance(target_coords, current_coords).km.__floor__()
     print(dist)
     return {"Distance": dist}
 
-@app.route('/calculate_co2_budget/<player_budget>')
-def calculate_co2_budget(player_budget):
-    new_budget = int(player_budget) - 200
+@app.route('/calculate_co2_budget/<player_budget>/<dist>')
+def calculate_co2_budget(player_budget, dist):
+    dist = dist
+    new_budget = int(player_budget) - int(dist) / (1.69 * 3)
+    new_budget = new_budget.__floor__()
     print(f"new budget", new_budget)
     return {"budget": new_budget}
 

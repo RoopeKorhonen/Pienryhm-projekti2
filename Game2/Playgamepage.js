@@ -141,9 +141,9 @@ function play_event(question) {
 
 }
 // Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää pisteitte laskuu
-async function calculate_co2_budget(player_budget) {
+async function calculate_co2_budget(player_budget, distance) {
     try {
-        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget['co2_budjet']);
+        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget['co2_budjet'] + '/' + distance);
         const data = await response.json()
         codes.co2_budjet = data.budget;
         console.log(data)
@@ -261,7 +261,7 @@ const map = L.map('map')
                 goButton.innerText = 'Fly here';
                 goButton.classList.add('button');
 
-                let textfordist = await fetch('http://127.0.0.1:5000/distanceLol/' + airport.latitude_deg + '/' + airport.longitude_deg + '/' + current_airport.latitude_deg + '/' + current_airport.longitude_deg)
+                let textfordist = await fetch('http://127.0.0.1:5000/distance_calculation/' + airport.latitude_deg + '/' + airport.longitude_deg + '/' + current_airport.latitude_deg + '/' + current_airport.longitude_deg)
                 textfordist = await textfordist.json()
                 distText.innerText = textfordist.Distance + ' km';
 
@@ -275,7 +275,7 @@ const map = L.map('map')
                     current_airport = airport
                     current_airport.active = true
                     console.log(current_airport)
-                    let new_budget = calculate_co2_budget(codes)
+                    let new_budget = calculate_co2_budget(codes, textfordist.Distance)
                     console.log(new_budget)
                     generateAirports();
                     get_event()
