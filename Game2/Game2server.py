@@ -178,6 +178,7 @@ def distance_calculation(target, target2, current, current2):
     print(dist)
     return {"Distance": dist}
 
+
 @app.route('/calculate_co2_budget/<player_budget>/<dist>')
 def calculate_co2_budget(player_budget, dist):
     dist = dist
@@ -185,6 +186,7 @@ def calculate_co2_budget(player_budget, dist):
     new_budget = new_budget.__floor__()
     print(f"new budget", new_budget)
     return {"budget": new_budget}
+
 
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
