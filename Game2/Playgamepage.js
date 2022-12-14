@@ -60,7 +60,7 @@ function play_event(question) {
         const button1 = document.getElementById('button1');
         const button2 = document.getElementById('button2');
         let correct = ''
-        let header = document.querySelector('h1');
+        let header = document.getElementById('question');
         let question_text = question["question"];
         right_answer = question["right_answer"];
         wrong_answer = question["wrong_answer"];
@@ -156,7 +156,7 @@ async function calculate_co2_budget(player_budget) {
 }
 
 let codes = player_info()
-target = document.getElementById('lol')
+target = document.getElementById('the-map')
 
 const map = L.map('map')
 
@@ -170,10 +170,11 @@ const map = L.map('map')
       const crd = pos.coords;
 
       // Use the leaflet.js library to show the location on the map (https://leafletjs.com/)
-      map.setView([crd.latitude, crd.longitude], 1);
+      map.setView([crd.latitude, crd.longitude], 3);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 20
       }).addTo(map);
     }
 
@@ -188,6 +189,9 @@ const map = L.map('map')
     let marker = ''
     let airport_list = {airports:[]}
     const airports = L.featureGroup().addTo(map);
+
+    const blueIcon = L.divIcon({className: 'blue-icon'})
+    const redIcon = L.divIcon({className: 'red-icon'})
 
     async function getAirports(){
         try{
@@ -205,9 +209,11 @@ const map = L.map('map')
             //console.log(name, lat, long)
 
             if (i === 99){
+                active = true
                 current_airport = {name: name, ident: icao, latitude_deg: lat,
                 longitude_deg: long, active: active}
                 console.log('active airport found ' + name)
+                map.setView([current_airport.latitude_deg, current_airport.longitude_deg], 3);
             }
 
             airport_list.airports.push({name: name, ident: icao, municipality: municipality, latitude_deg: lat,
@@ -230,10 +236,12 @@ const map = L.map('map')
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
             if (airport.active) {
+                marker.setIcon(redIcon)
                 marker.bindPopup('You are here ' + airport.name);
                 marker.openPopup();
                 console.log('current airport is ' + airport.name);
             } else{
+                marker.setIcon(blueIcon)
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
                 const distText = document.createElement('p');
