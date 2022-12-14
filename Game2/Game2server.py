@@ -12,7 +12,7 @@ def connect_db():
         port=3306,
         database='flight_game',
         user='root',
-        password='gutpo80',
+        password='RootWord1Salasana1',
         autocommit=True
     )
 
