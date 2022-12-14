@@ -2,7 +2,7 @@
   font-family: "Lucida Console", Courier, monospace;
 }
 body {
-  background-image: url(https://images.hdqwalls.com/download/passenger-plane-in-clouds-view-from-far-away-26-1920x1080.jpg);
+  background-image: url(https://img.freepik.com/premium-vector/sky-cloud-daily-illustration-with-cartoon-cirrus-cumulus-white-clouds-rays-sun-illustration_1284-62767.jpg?w=2000);
   background-size: cover;
   overflow: hidden;
 }
@@ -21,10 +21,9 @@ body {
     justify-content: center;
     align-items: center;
 }
-.gamemap {
+.game-map {
     width: 1200px;
     height:500px;
-    border: 5px solid lightskyblue;
     display: block;
     flex-direction: column;
     justify-content: center;

@@ -1,3 +1,4 @@
+console.log("Program starts")
 async function player_info(){
     let name = prompt("Give player name")
     let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
@@ -12,8 +13,6 @@ async function player_info(){
         console.log('Verkkovirhe: ', error)
     }
 }
-
-
 function append_info(datax){
     console.log("Appendi sisällä",datax)
     let list = document.getElementById('player_info');
@@ -24,6 +23,10 @@ function append_info(datax){
         let player_difficulty = document.createElement("td")
         let player_budjet = document.createElement("td")
         player_username.innerText = datax['name']
+        let player_points_name = datax['points']
+        let player_co2_budget_name = datax['co2_budjet']
+        let player_name = datax['name']
+        let player_difficulty_name = datax['difficulty']
         player_points.innerText = datax['points']
         player_difficulty.innerText = datax['difficulty']
         player_budjet.innerText = datax['co2_budjet']
@@ -32,11 +35,10 @@ function append_info(datax){
         player.appendChild(player_points)
         player.appendChild(player_difficulty)
         list.appendChild(player)
+        console.log("Playerin budgetti", player_co2_budget_name)
+        return player_co2_budget_name
     }
-    return
 }
-
-
 async function get_event() {
     try {
         const response = await fetch('http://127.0.0.1:5000/get_question/');
@@ -48,10 +50,9 @@ async function get_event() {
         console.log('Verkkovirhe: ', error)
     }
 }
-
-
 function play_event(question) {
-    if (Math.random() < 1 / 3) {
+    console.log(question)
+    if (Math.random() < 2 / 3) {
         const modal = document.getElementById("myModal")
         modal.style.display = "block"
         let right_answer = ''
@@ -114,13 +115,14 @@ function play_event(question) {
 
             if (answer === correct) {
                 // lisää 100 co2 budjettiin
+
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 modal.style.display = "none"
+            } else {
+                console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
+                modal.style.display = "none"
             }
-            else {
-                console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!");
-                modal.style.display = "none";
-            }
+
         })
 
         function timeIsUp() {
@@ -128,16 +130,33 @@ function play_event(question) {
             //tähän -200 co2 komento, joka päivittää tiedot.
             modal.style.display = "none"
         }
+
         return question_text
+
+
     }
 
 }
-
+// Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää pisteitte laskuu
+async function calculate_co2_budget(player_budget) {
+    try {
+        let player_budget_open = await player_budget.then(function(result) {
+            console.log("promise auki juttu", result)
+            return result
+})
+        console.log("Playerbudget auki", player_budget_open)
+        console.log("Playerin budgetti ennen laskentaa",player_budget)
+        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget_open['co2_budjet'] + '');
+        const data = await response.json();
+        console.log("Laskettu budget info",data)
+        return data;
+    } catch (error) {
+        console.log('Verkkovirhe: ', error)
+    }
+}
 
 let codes = player_info()
-console.log('Player data: ' + codes)
-
-target = document.getElementById('game_map')
+target = document.getElementById('lol')
 
 const map = L.map('map')
 
@@ -210,7 +229,7 @@ const map = L.map('map')
         airports.clearLayers();
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
-            if (airport.active) {
+            if (airport.ident === current_airport) {
                 airport.active = true;
                 marker.bindPopup('You are here ' + airport.name);
                 marker.openPopup();
@@ -231,12 +250,12 @@ const map = L.map('map')
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    current_airport.active = false
+                    get_event()
+                    //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
+                    let new_budget = calculate_co2_budget(codes)
                     current_airport = airport
-                    current_airport.active = true
                     console.log(current_airport)
                     generateAirports();
-                    get_event();
                 });
 
                 marker.bindPopup(popupContent);

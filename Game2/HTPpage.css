@@ -1,0 +1,27 @@
+body {
+    background-image: url(https://img.freepik.com/premium-vector/sky-cloud-daily-illustration-with-cartoon-cirrus-cumulus-white-clouds-rays-sun-illustration_1284-62767.jpg?w=2000);
+    background-size: cover;
+    overflow: hidden;
+    font-family: "Lucida Console", Courier, monospace;
+}
+nav {
+    display: flex;
+    flex-direction: row;
+    height: 5em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+nav img {
+   width: 5em;
+   height: 5em;
+   flex: 1;
+}
+.center-div {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.center-div h1 {
+    font-size: 50px;
+}
