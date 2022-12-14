@@ -55,23 +55,22 @@ async function get_event() {
 }
 
 
+
 function play_event(question) {
     console.log(question)
     if (Math.random() < 2 / 3) {
         const modal = document.getElementById("myModal")
         const resultModal = document.getElementById("result")
-        modal.style.display = "block"
-        let right_answer = ''
-        let wrong_answer = ''
         const button1 = document.getElementById("button1")
         const button2 = document.getElementById('button2');
-        let correct = ''
-        let header = document.getElementById('question');
-        let question_text = question["question"];
-        right_answer = question["right_answer"];
-        wrong_answer = question["wrong_answer"];
-        correct = right_answer
+        const header = document.getElementById('question');
+        const question_text = question["question"];
+        const right_answer = question["right_answer"];
+        const wrong_answer = question["wrong_answer"];
+        let correct = right_answer
+        modal.style.display = "block"
         header.innerHTML = question_text
+        console.log(correct)
 
 
         let time = 10;
@@ -92,58 +91,72 @@ function play_event(question) {
 
         let button_rand = Math.floor(Math.random() * 2)
         if (button_rand === 1) {
+            console.log('button 1 is right')
             button1.innerText = right_answer
             button2.innerText = wrong_answer
+            correct = button1.innerText
         } else {
+            console.log('button 2 is right')
             button1.innerText = wrong_answer
             button2.innerText = right_answer
-
+            correct = button2.innerText
         }
-        console.log(question_text)
-        button1.addEventListener('click', function () {
-            let answer = button1.innerText;
+
+        button1.addEventListener('click', function getAnswer() {
+            button1.replaceWith(button1.cloneNode(true))
+            button2.replaceWith(button2.cloneNode(true))
             clearInterval(timer);
+            console.log('button 1 pressed')
+            let answer = button1.innerText;
 
-            if (answer === correct) {
+            if (answer === right_answer) {
                 codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
-
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
-                header.innerHTML = "Correct! You will now gain back a small bit of co2!"
+                resultModal.innerText = 'CORRECT!'
             } else {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
-                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 20))
+                resultModal.innerText = 'WRONG!'
+                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 50))
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
                 modal.style.display = "none";
+                button2.removeEventListener('click', getAnswer)
                 clearInterval(message);
             }, 2000)
-
+            button1.removeEventListener('click', getAnswer)
         })
 
-        button2.addEventListener('click', function () {
-            let answer = button2.innerText;
-            clearInterval(timer);
 
-            if (answer === correct) {
+        button2.addEventListener('click', function getAnswer2() {
+            button1.replaceWith(button1.cloneNode(true))
+            button2.replaceWith(button2.cloneNode(true))
+            button2.removeEventListener('click', getAnswer2)
+            clearInterval(timer);
+            console.log('button 2 pressed')
+            let answer2 = button2.innerText;
+            console.log(answer2)
+
+            if (answer2 === right_answer) {
                 codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
-                resultModal.style.display = "block";
 
                 console.log("OIKEIN!!!!!!!!!!!!!!")
+                resultModal.style.display = "block";
+                resultModal.innerText = 'CORRECT!'
             } else {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
-                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 20))
-
+                resultModal.innerText = 'WRONG!'
+                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 50))
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
                 modal.style.display = "none";
+                button2.removeEventListener('click', getAnswer2)
                 clearInterval(message);
             }, 2000)
-
         })
 
         function timeIsUp() {
@@ -219,6 +232,17 @@ const map = L.map('map')
 
     const blueIcon = L.divIcon({className: 'blue-icon'})
     const redIcon = L.divIcon({className: 'red-icon'})
+
+
+    async function getWeather(lat, long){
+        try{
+            const response = await fetch('http://127.0.0.1:5000/get_weather/' + lat + '/' + long)
+            const data = await response.json();
+            console.log(data)
+        } catch (error){
+            console.log(error)
+        }
+    }
 
 
     async function getAirports(){
@@ -301,6 +325,7 @@ const map = L.map('map')
                     dist = parseInt(textfordist.Distance)
                     let new_budget = calculate_co2_budget(codes, parseInt(dist))
                     console.log(new_budget)
+                    getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
                     generateAirports();
                     get_event()
                 });
