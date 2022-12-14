@@ -41,7 +41,7 @@ body {
     font-size: 25px;
 }
 
-#myModal{
+.modal{
     position: absolute;
     z-index: 2;
     top: 30%;
@@ -50,6 +50,10 @@ body {
     width: 90%;
     height: 60%;
     overflow: auto;
+}
+
+#result{
+    z-index: 3;
 }
 
 .blue-icon {

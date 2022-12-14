@@ -137,10 +137,10 @@ def get_full_highscores():
     else:
         return {"Error": "No results. (Invalid sql code)"}
 
-@app.route('/get_weather/')
-def get_weather():
-    lat = 60.2941
-    lon = 25.0410
+@app.route('/get_weather/<lat>/<long>')
+def get_weather(lat, long):
+    lat = lat
+    lon = long
     API_key = ("14112fd30bc018d0c6c3c1a190ffbb3f")
     address = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_key}&units=metric"
     answer = requests.get(address).json()
@@ -148,14 +148,12 @@ def get_weather():
     weather = desc[0]["description"]
     wind_speed = answer["wind"]["speed"]
     temperature = answer["main"]["temp"]
-    weather_list = []
     weather_info = {
         'temperature': temperature,
         'windspeed': wind_speed,
         'description': weather,
     }
-    weather_list.append(weather_info)
-    return weather_list
+    return weather_info
 
 @app.route('/get_question/')
 def get_question():
@@ -178,6 +176,7 @@ def distance_calculation(target, target2, current, current2):
     print(dist)
     return {"Distance": dist}
 
+
 @app.route('/calculate_co2_budget/<player_budget>/<dist>')
 def calculate_co2_budget(player_budget, dist):
     dist = dist
@@ -185,6 +184,7 @@ def calculate_co2_budget(player_budget, dist):
     new_budget = new_budget.__floor__()
     print(f"new budget", new_budget)
     return {"budget": new_budget}
+
 
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
