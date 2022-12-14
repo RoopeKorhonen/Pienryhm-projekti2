@@ -1,18 +1,21 @@
 import mysql.connector
 import json
+import os
+from dotenv import load_dotenv
 import requests
 from geopy import distance
 from flask import Flask, request
 from flask_cors import CORS
 
+load_dotenv()
 
 def connect_db():
     return mysql.connector.connect(
-        host='127.0.0.1',
+        host=os.environ.get('HOST'),
         port=3306,
-        database='flight_game',
-        user='root',
-        password='gutpo80',
+        database=os.environ.get('DB_NAME'),
+        user=os.environ.get('DB_USER'),
+        password=os.environ.get('DB_PASS'),
         autocommit=True
     )
 
