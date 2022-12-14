@@ -1,18 +1,20 @@
-console.log("Program starts")
 async function player_info(){
+    console.log('getting player info')
     let name = prompt("Give player name")
     let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
     console.log("Name and difficulty", name, difficulty)
     try {
         const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
         const data = await response.json();
-        console.log("Data info",data)
         append_info(data)
+        codes = data
         return data;
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
 }
+
+
 function append_info(datax){
     console.log("Appendi sisällä",datax)
     let list = document.getElementById('player_info');
@@ -36,9 +38,10 @@ function append_info(datax){
         player.appendChild(player_difficulty)
         list.appendChild(player)
         console.log("Playerin budgetti", player_co2_budget_name)
-        return player_co2_budget_name
     }
 }
+
+
 async function get_event() {
     try {
         const response = await fetch('http://127.0.0.1:5000/get_question/');
@@ -50,6 +53,8 @@ async function get_event() {
         console.log('Verkkovirhe: ', error)
     }
 }
+
+
 function play_event(question) {
     console.log(question)
     if (Math.random() < 2 / 3) {
@@ -132,31 +137,36 @@ function play_event(question) {
         }
 
         return question_text
-
-
     }
 
 }
 // Semi toimiva funktio jotenki ei vaa saa yhteyttä suosittelen tätä käyttää pisteitte laskuu
 async function calculate_co2_budget(player_budget) {
     try {
-        let player_budget_open = await player_budget.then(function(result) {
+        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget['co2_budjet']);
+        const data = await response.json()
+        codes.co2_budjet = data.budget;
+        console.log(data)
+        /* let player_budget_open = await player_budget.then(function(result) {
             console.log("promise auki juttu", result)
             return result
 })
         console.log("Playerbudget auki", player_budget_open)
         console.log("Playerin budgetti ennen laskentaa",player_budget)
-        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget_open['co2_budjet'] + '');
+        const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget_open['co2_budjet']);
         const data = await response.json();
         console.log("Laskettu budget info",data)
-        return data;
+        return data; */
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
 }
 
+
 let codes = player_info()
+console.log(codes)
 target = document.getElementById('the-map')
+
 
 const map = L.map('map')
 
@@ -167,11 +177,6 @@ const map = L.map('map')
     };
 
     function success(pos) {
-      const crd = pos.coords;
-
-      // Use the leaflet.js library to show the location on the map (https://leafletjs.com/)
-      map.setView([crd.latitude, crd.longitude], 3);
-
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 20
@@ -182,9 +187,9 @@ const map = L.map('map')
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
-
     // Starts the location search
     navigator.geolocation.getCurrentPosition(success, error, options);
+
 
     let marker = ''
     let airport_list = {airports:[]}
@@ -192,6 +197,7 @@ const map = L.map('map')
 
     const blueIcon = L.divIcon({className: 'blue-icon'})
     const redIcon = L.divIcon({className: 'red-icon'})
+
 
     async function getAirports(){
         try{
@@ -213,6 +219,7 @@ const map = L.map('map')
                 current_airport = {name: name, ident: icao, latitude_deg: lat,
                 longitude_deg: long, active: active}
                 console.log('active airport found ' + name)
+                console.log(current_airport)
                 map.setView([current_airport.latitude_deg, current_airport.longitude_deg], 3);
             }
 
@@ -220,11 +227,11 @@ const map = L.map('map')
                 longitude_deg: long, active: active})
         }
         generateAirports()
-        return data
         } catch (error){
             console.log('Verkkovirhe: ', error)
         }
     }
+
 
     /* Store the ICAO code of the airport the player is currently at,
     this will determine which airport will be marked as "active" after the refresh*/
@@ -233,43 +240,51 @@ const map = L.map('map')
     async function generateAirports(){
         console.log(airport_list)
         airports.clearLayers();
+
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
             if (airport.active) {
                 marker.setIcon(redIcon)
                 marker.bindPopup('You are here ' + airport.name);
                 marker.openPopup();
+                airport.active = false
                 console.log('current airport is ' + airport.name);
+
             } else{
                 marker.setIcon(blueIcon)
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
                 const distText = document.createElement('p');
                 const h2text = document.createElement('h2');
+
                 h2text.innerText = airport.name;
                 goButton.innerText = 'Fly here';
+                goButton.classList.add('button');
+
                 let textfordist = await fetch('http://127.0.0.1:5000/distanceLol/' + airport.latitude_deg + '/' + airport.longitude_deg + '/' + current_airport.latitude_deg + '/' + current_airport.longitude_deg)
                 textfordist = await textfordist.json()
                 distText.innerText = textfordist.Distance + ' km';
-                goButton.classList.add('button');
+
                 popupContent.append(distText)
                 popupContent.append(goButton);
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    get_event()
+                    console.log(current_airport)
                     //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
-                    current_airport.active = false
                     current_airport = airport
                     current_airport.active = true
                     console.log(current_airport)
                     let new_budget = calculate_co2_budget(codes)
+                    console.log(new_budget)
                     generateAirports();
+                    get_event()
                 });
 
                 marker.bindPopup(popupContent);
             }
         }
+        console.log(codes)
     }
 
     getAirports()
