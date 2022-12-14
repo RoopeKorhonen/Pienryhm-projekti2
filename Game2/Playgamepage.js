@@ -229,8 +229,7 @@ const map = L.map('map')
         airports.clearLayers();
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
-            if (airport.ident === current_airport) {
-                airport.active = true;
+            if (airport.active) {
                 marker.bindPopup('You are here ' + airport.name);
                 marker.openPopup();
                 console.log('current airport is ' + airport.name);
@@ -252,9 +251,11 @@ const map = L.map('map')
                 goButton.addEventListener('click', function () {
                     get_event()
                     //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
-                    let new_budget = calculate_co2_budget(codes)
+                    current_airport.active = false
                     current_airport = airport
+                    current_airport.active = true
                     console.log(current_airport)
+                    let new_budget = calculate_co2_budget(codes)
                     generateAirports();
                 });
 
