@@ -1,5 +1,3 @@
-
-console.log("Program starts")
 async function player_info(){
     let name = prompt("Give player name")
     let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
@@ -14,6 +12,8 @@ async function player_info(){
         console.log('Verkkovirhe: ', error)
     }
 }
+
+
 function append_info(datax){
     console.log("Appendi sisällä",datax)
     let list = document.getElementById('player_info');
@@ -33,7 +33,10 @@ function append_info(datax){
         player.appendChild(player_difficulty)
         list.appendChild(player)
     }
+    return
 }
+
+
 async function get_event() {
     try {
         const response = await fetch('http://127.0.0.1:5000/get_question/');
@@ -45,6 +48,7 @@ async function get_event() {
         console.log('Verkkovirhe: ', error)
     }
 }
+
 
 function play_event(question) {
     if (Math.random() < 1 / 3) {
@@ -110,14 +114,13 @@ function play_event(question) {
 
             if (answer === correct) {
                 // lisää 100 co2 budjettiin
-
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 modal.style.display = "none"
-            } else {
-                console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
-                modal.style.display = "none"
             }
-
+            else {
+                console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!");
+                modal.style.display = "none";
+            }
         })
 
         function timeIsUp() {
@@ -125,17 +128,16 @@ function play_event(question) {
             //tähän -200 co2 komento, joka päivittää tiedot.
             modal.style.display = "none"
         }
-
         return question_text
-
-
     }
 
 }
 
-let codes = player_info()
 
-target = document.getElementById('lol')
+let codes = player_info()
+console.log('Player data: ' + codes)
+
+target = document.getElementById('game_map')
 
 const map = L.map('map')
 
@@ -208,7 +210,7 @@ const map = L.map('map')
         airports.clearLayers();
         for (let airport of airport_list.airports){
             const marker = L.marker([airport.latitude_deg, airport.longitude_deg]).addTo(airports)
-            if (airport.ident === current_airport) {
+            if (airport.active) {
                 airport.active = true;
                 marker.bindPopup('You are here ' + airport.name);
                 marker.openPopup();
@@ -229,10 +231,12 @@ const map = L.map('map')
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    get_event()
+                    current_airport.active = false
                     current_airport = airport
+                    current_airport.active = true
                     console.log(current_airport)
                     generateAirports();
+                    get_event();
                 });
 
                 marker.bindPopup(popupContent);
