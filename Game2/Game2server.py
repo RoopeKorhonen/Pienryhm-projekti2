@@ -193,6 +193,14 @@ def calculate_co2_budget(player_budget, dist):
     return {"budget": new_budget}
 
 
+@app.route('/game_over/<name>/<score>/<diff>')
+def game_over(name, score, diff):
+    print(name, score, diff)
+    sql = "INSERT INTO game (screen_name, highscores, difficulty) " \
+          "values ('" + name + "', '" + score + "', '" + diff + "');"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)

@@ -249,7 +249,16 @@ async function calculate_co2_budget(player_budget, distance) {
     }
 }
 
-function game_over(){
+async function game_over(){
+   try {
+        const response = await fetch('http://127.0.0.1:5000/game_over/' + codes["name"] + '/' + codes["points"] + '/' + codes["difficulty"]);
+        const data = await response.json();
+        console.log("Event data inffo",data)
+        play_event(data)
+        return data;
+    } catch (error) {
+        console.log('Verkkovirhe: ', error)
+    }
     location.replace("./Fullhighscorespage.html")
 }
 
@@ -432,7 +441,7 @@ const map = L.map('map')
                     current_airport.active = true
 
                     dist = parseInt(textfordist.Distance)
-                    codes.points += 10000
+                    codes.points += 1000
                     player_points.innerText = codes.points
 
                     calculate_co2_budget(codes, parseInt(dist))
