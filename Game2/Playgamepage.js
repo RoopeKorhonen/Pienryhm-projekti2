@@ -330,12 +330,12 @@ const map = L.map('map')
             }
 
             if (data["description"].includes("rain")){
-                player_budjet.innerText = codes.co2_budjet
                 if (data["description"].includes("shower rain")){
                     console.log("OH NO SHOWER RAIN TIME!")
                     alertModal.style.display = "block";
                     alertModal.innerText = "Oh no you've been struck by heavy rain on your trip!"
-                    codes.co2_budjet -= 2000
+                    codes.co2_budjet -= 5000
+                    player_budjet.innerText = codes.co2_budjet
                 }
                 const alert = setInterval(function() {
                     alertModal.style.display = "none";
@@ -347,8 +347,9 @@ const map = L.map('map')
 
             if (data["description"].includes("clear sky")){
                 alertModal.style.display = "block";
-                alertModal.innerText = "the pleasant clear skies made your trip much smoother, you used less Co2."
                 codes.co2_budjet += 3000
+                player_budjet.innerText = codes.co2_budjet
+                alertModal.innerText = "the pleasant clear skies made your trip much smoother, you used less Co2."
                 const alert = setInterval(function() {
                     alertModal.style.display = "none";
                     if (codes.co2_budjet <= 0){
@@ -359,7 +360,22 @@ const map = L.map('map')
 
             if (data["description"].includes("mist")){
                 alertModal.style.display = "block";
-                alertModal.innerText = "This mist makes it very hard to see"
+                alertModal.innerText = "This mist makes it very hard to see, causing your flight to become longer and your Co2 emissions from it to increase."
+                codes.co2_budjet -= 2000
+                player_budjet.innerText = codes.co2_budjet
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("snow")){
+                alertModal.style.display = "block";
+                alertModal.innerText = "The snow fills you with christmas spirit. Your Co2 emissions also decreased for this flight, it's a christmas miracle!."
+                codes.co2_budjet += 2000
+                player_budjet.innerText = codes.co2_budjet
                 const alert = setInterval(function() {
                     alertModal.style.display = "none";
                     if (codes.co2_budjet <= 0){
