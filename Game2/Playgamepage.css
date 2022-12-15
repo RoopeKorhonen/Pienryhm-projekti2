@@ -51,16 +51,30 @@ body {
     height: 60%;
     overflow: auto;
     text-align: center;
+    padding: 1rem;
 }
+
 .modal-question{
     margin-left: auto;
     margin-right: auto;
 }
+
+#result{
+    font-size: 50px;
+}
+
 .modal-button {
     font-size: 40px;
     width: 100%;
     height: 100%;
 }
+
+.button{
+    font-size: 20px;
+    background-color: white;
+    padding: 5px;
+}
+
 #modal-background{
     position: absolute;
     z-index: 2;

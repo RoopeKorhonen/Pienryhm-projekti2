@@ -133,9 +133,10 @@ function play_event(question) {
             timerElement.innerHTML = "Time remaining: " + time + " seconds";
             if (time === -1) {
                 alert("Time is up, penalty has been added to your co2 fuel.")
-                //tähän -200 co2 komento, joka päivittää tiedot.
-                modal.style.display = "none"
-                modalBG.style.display = "none"
+                codes.co2_budjet -= Math.round((parseInt(dist) / 100 * 10))
+                player_budjet.innerText = codes.co2_budjet
+                modal.style.display = "none";
+                modalBG.style.display = "none";
                 clearInterval(timer);
             }
         }, 1000);
@@ -156,7 +157,6 @@ function play_event(question) {
             modal.style.display = "none";
             modalBG.style.display = "none";
             clearInterval(timer);
-            console.log('button 1 pressed')
             let answer = button1.innerText;
 
             if (answer === correct
@@ -373,7 +373,7 @@ const map = L.map('map')
 
             if (data["description"].includes("snow")){
                 alertModal.style.display = "block";
-                alertModal.innerText = "The snow fills you with christmas spirit. Your Co2 emissions also decreased for this flight, it's a christmas miracle!."
+                alertModal.innerText = "The snow fills you with christmas spirit. Some of your Co2 emissions caused by this flight vanished, it's a christmas miracle!."
                 codes.co2_budjet += 2000
                 player_budjet.innerText = codes.co2_budjet
                 const alert = setInterval(function() {
@@ -445,7 +445,7 @@ const map = L.map('map')
                 marker.setIcon(blueIcon)
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
-                const distText = document.createElement('p');
+                const distText = document.createElement('h1');
                 const h2text = document.createElement('h2');
 
                 goButton.id = "go-button"
