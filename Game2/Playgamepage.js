@@ -8,22 +8,22 @@ async function player_info(){
         const data = await response.json();
         append_info(data)
         codes = data
+        console.log('codes: ' + codes)
         return data;
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
 }
-
+let player = document.createElement("tr");
+let player_username = document.createElement("td");
+let player_points = document.createElement("td");
+let player_difficulty = document.createElement("td");
+let player_budjet = document.createElement("td");
 
 function append_info(datax){
     console.log("Appendi sisällä",datax)
     let list = document.getElementById('player_info');
     for(let i = 0; i < 1; i++){
-        let player = document.createElement("tr")
-        let player_username = document.createElement("td")
-        let player_points = document.createElement("td")
-        let player_difficulty = document.createElement("td")
-        let player_budjet = document.createElement("td")
         player_username.innerText = datax['name']
         let player_points_name = datax['points']
         let player_co2_budget_name = datax['co2_budjet']
@@ -179,6 +179,7 @@ async function calculate_co2_budget(player_budget, distance) {
         const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget['co2_budjet'] + '/' + distance);
         const data = await response.json()
         codes.co2_budjet = data.budget;
+        player_budjet.innerText = codes.co2_budjet
         if (codes.co2_budjet <= 0){
             game_over()
         }
@@ -327,6 +328,8 @@ const map = L.map('map')
                     current_airport.active = true
                     console.log(current_airport)
                     dist = parseInt(textfordist.Distance)
+                    codes.points += 1
+                    player_points.innerText = codes.points
                     let new_budget = calculate_co2_budget(codes, parseInt(dist))
                     console.log(new_budget)
                     getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
