@@ -135,6 +135,8 @@ function play_event(question) {
                 alert("Time is up, penalty has been added to your co2 fuel.")
                 codes.co2_budjet -= Math.round((parseInt(dist) / 100 * 10))
                 player_budjet.innerText = codes.co2_budjet
+                modal.style.display = "none";
+                modalBG.style.display = "none";
                 clearInterval(timer);
             }
         }, 1000);
@@ -155,7 +157,6 @@ function play_event(question) {
             modal.style.display = "none";
             modalBG.style.display = "none";
             clearInterval(timer);
-            console.log('button 1 pressed')
             let answer = button1.innerText;
 
             if (answer === correct
