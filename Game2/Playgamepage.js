@@ -113,10 +113,18 @@ function play_event(question) {
         modal.style.display = "block"
         modalBG.style.display = "block";
         header.innerHTML = question_text
-        console.log(correct)
 
+        let timeAvailable
+        if (difficulty === "Easy") {
+            timeAvailable = 15;
+        } else if (difficulty === "Medium"){
+            timeAvailable = 10;
+        }
+        else{
+            timeAvailable = 5;
+        }
 
-        let time = 10;
+        let time = timeAvailable;
         let timerElement = document.getElementById("timer");
         timerElement.innerHTML = "Time remaining: " + time + " seconds";
         //document.body.appendChild(timerElement);
@@ -134,11 +142,9 @@ function play_event(question) {
 
         let button_rand = Math.floor(Math.random() * 2)
         if (button_rand === 1) {
-            console.log('button 1 is right')
             button1.innerText = right_answer
             button2.innerText = wrong_answer
         } else {
-            console.log('button 2 is right')
             button1.innerText = wrong_answer
             button2.innerText = right_answer
         }
@@ -309,6 +315,7 @@ const map = L.map('map')
 
             if (data["description"].includes("thunderstorm")){
                 codes.co2_budjet -= 10000
+                player_budjet.innerText = codes.co2_budjet
                 alertModal.style.display = "block";
                 alertModal.innerText = "Oh no! You flew into a thunder storm and had to take multiple longer routes to avoid getting hit! This will be disastrous for your Co2 consumption!"
 
@@ -322,10 +329,12 @@ const map = L.map('map')
             }
 
             if (data["description"].includes("rain")){
-                alertModal.style.display = "block";
-                alertModal.innerText = "Oh no it's raining!"
+                player_budjet.innerText = codes.co2_budjet
                 if (data["description"].includes("shower rain")){
                     console.log("OH NO SHOWER RAIN TIME!")
+                    alertModal.style.display = "block";
+                    alertModal.innerText = "Oh no you've been struck by heavy rain on your trip!"
+                    codes.co2_budjet -= 2000
                 }
                 const alert = setInterval(function() {
                     alertModal.style.display = "none";
