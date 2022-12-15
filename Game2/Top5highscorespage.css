@@ -28,6 +28,9 @@ nav img {
     flex-direction: column;
     justify-content: center;
 }
+.center-div h1{
+    font-size: 50px;
+}
 .center-div p {
     font-size: 30px;
 }
