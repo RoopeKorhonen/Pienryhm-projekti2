@@ -75,6 +75,11 @@ body {
     padding: 5px;
 }
 
+#input{
+    font-size: 25px;
+}
+
+
 #modal-background{
     position: absolute;
     z-index: 2;
