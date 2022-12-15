@@ -113,7 +113,8 @@ function play_event(question) {
 
             if (answer === correct
             ) {
-                codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
+                codes.co2_budjet += Math.round((parseInt(dist) / 100 * 10))
+                player_budjet.innerText = codes.co2_budjet
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'CORRECT!'
@@ -121,11 +122,15 @@ function play_event(question) {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'WRONG!'
-                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 50))
+                codes.co2_budjet -= Math.round((parseInt(dist) / 100 * 50))
+                player_budjet.innerText = codes.co2_budjet
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
                 button2.removeEventListener('click', getAnswer)
+                if (codes.co2_budjet <= 0){
+                game_over()
+            }
                 clearInterval(message);
             }, 2000)
             button1.removeEventListener('click', getAnswer)
@@ -144,8 +149,8 @@ function play_event(question) {
             console.log(answer2)
 
             if (answer2 === correct) {
-                codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
-
+                codes.co2_budjet += Math.round((parseInt(dist) * 2))
+                player_budjet.innerText = codes.co2_budjet
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'CORRECT!'
@@ -153,12 +158,15 @@ function play_event(question) {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'WRONG!'
-                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 50))
+                codes.co2_budjet -= Math.round((parseInt(dist) * 50))
+                player_budjet.innerText = codes.co2_budjet
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
-                modal.style.display = "none";
-                button2.removeEventListener('click', getAnswer2)
+                button2.removeEventListener('click', getAnswer2);
+                if (codes.co2_budjet <= 0){
+                game_over()}
+
                 clearInterval(message);
             }, 2000)
         })
@@ -183,7 +191,6 @@ async function calculate_co2_budget(player_budget, distance) {
         if (codes.co2_budjet <= 0){
             game_over()
         }
-        console.log(data)
         /* let player_budget_open = await player_budget.then(function(result) {
             console.log("promise auki juttu", result)
             return result
@@ -202,6 +209,7 @@ async function calculate_co2_budget(player_budget, distance) {
 function game_over(){
     location.replace("./Fullhighscorespage.html")
 }
+
 
 let codes = player_info()
 console.log(codes)
@@ -243,7 +251,7 @@ const map = L.map('map')
         try{
             const response = await fetch('http://127.0.0.1:5000/get_weather/' + lat + '/' + long)
             const data = await response.json();
-            console.log(data)
+            console.log(data["description"])
         } catch (error){
             console.log(error)
         }
@@ -288,6 +296,7 @@ const map = L.map('map')
     this will determine which airport will be marked as "active" after the refresh*/
     let current_airport
 
+    /*Take the airports from the JSON generated at the start of the game and put them on the map*/
     async function generateAirports(){
         console.log(airport_list)
         airports.clearLayers();
@@ -322,16 +331,16 @@ const map = L.map('map')
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    console.log(current_airport)
                     //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
                     current_airport = airport
                     current_airport.active = true
-                    console.log(current_airport)
+
                     dist = parseInt(textfordist.Distance)
-                    codes.points += 1
+                    codes.points += 10000
                     player_points.innerText = codes.points
-                    let new_budget = calculate_co2_budget(codes, parseInt(dist))
-                    console.log(new_budget)
+
+                    calculate_co2_budget(codes, parseInt(dist))
+
                     getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
                     generateAirports();
                     get_event()
