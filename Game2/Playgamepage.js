@@ -133,9 +133,8 @@ function play_event(question) {
             timerElement.innerHTML = "Time remaining: " + time + " seconds";
             if (time === -1) {
                 alert("Time is up, penalty has been added to your co2 fuel.")
-                //tähän -200 co2 komento, joka päivittää tiedot.
-                modal.style.display = "none"
-                modalBG.style.display = "none"
+                codes.co2_budjet -= Math.round((parseInt(dist) / 100 * 10))
+                player_budjet.innerText = codes.co2_budjet
                 clearInterval(timer);
             }
         }, 1000);
@@ -373,7 +372,7 @@ const map = L.map('map')
 
             if (data["description"].includes("snow")){
                 alertModal.style.display = "block";
-                alertModal.innerText = "The snow fills you with christmas spirit. Your Co2 emissions also decreased for this flight, it's a christmas miracle!."
+                alertModal.innerText = "The snow fills you with christmas spirit. Some of your Co2 emissions caused by this flight vanished, it's a christmas miracle!."
                 codes.co2_budjet += 2000
                 player_budjet.innerText = codes.co2_budjet
                 const alert = setInterval(function() {
