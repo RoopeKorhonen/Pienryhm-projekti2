@@ -444,7 +444,7 @@ const map = L.map('map')
                 marker.setIcon(blueIcon)
                 const popupContent = document.createElement('div');
                 const goButton = document.createElement('button');
-                const distText = document.createElement('p');
+                const distText = document.createElement('h1');
                 const h2text = document.createElement('h2');
 
                 goButton.id = "go-button"
