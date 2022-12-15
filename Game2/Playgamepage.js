@@ -154,7 +154,7 @@ function play_event(question) {
 
             if (answer === correct
             ) {
-                codes.co2_budjet += Math.round((parseInt(dist) / 100 * 10))
+                codes.co2_budjet += Math.round((parseInt(dist) / 100 * 20))
                 player_budjet.innerText = codes.co2_budjet
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
@@ -163,7 +163,7 @@ function play_event(question) {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'WRONG!'
-                codes.co2_budjet -= Math.round((parseInt(dist) / 100 * 50))
+                codes.co2_budjet -= Math.round((parseInt(dist) * 2))
                 player_budjet.innerText = codes.co2_budjet
             }
             const message = setInterval(function() {
@@ -190,7 +190,7 @@ function play_event(question) {
             console.log(answer2)
 
             if (answer2 === correct) {
-                codes.co2_budjet += Math.round((parseInt(dist) * 2))
+                codes.co2_budjet += Math.round((parseInt(dist) / 100 * 10))
                 player_budjet.innerText = codes.co2_budjet
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
@@ -199,7 +199,7 @@ function play_event(question) {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'WRONG!'
-                codes.co2_budjet -= Math.round((parseInt(dist) * 50))
+                codes.co2_budjet -= Math.round((parseInt(dist) * 2))
                 player_budjet.innerText = codes.co2_budjet
             }
             const message = setInterval(function() {
@@ -219,6 +219,8 @@ function play_event(question) {
         }
 
         return question_text
+    } else{
+         getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
     }
 
 }
@@ -288,11 +290,64 @@ const map = L.map('map')
     const redIcon = L.divIcon({className: 'red-icon'})
 
 
+    /*Get the weather at the airport the player is at*/
     async function getWeather(lat, long){
         try{
             const response = await fetch('http://127.0.0.1:5000/get_weather/' + lat + '/' + long)
             const data = await response.json();
             console.log(data["description"])
+            let alertModal = document.getElementById('info-modal')
+
+            if (data["description"].includes("thunderstorm")){
+                codes.co2_budjet -= 10000
+                alertModal.style.display = "block";
+                alertModal.innerText = "Oh no! You flew into a thunder storm and had to take multiple longer routes to avoid getting hit! This will be disastrous for your Co2 consumption!"
+
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()
+            }
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("rain")){
+                alertModal.style.display = "block";
+                alertModal.innerText = "Oh no it's raining!"
+                if (data["description"].includes("shower rain")){
+                    console.log("OH NO SHOWER RAIN TIME!")
+                }
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("clear sky")){
+                alertModal.style.display = "block";
+                alertModal.innerText = "the pleasant clear skies made your trip much smoother, you used less Co2."
+                codes.co2_budjet += 3000
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("mist")){
+                alertModal.style.display = "block";
+                alertModal.innerText = "This mist makes it very hard to see"
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
         } catch (error){
             console.log(error)
         }
@@ -381,8 +436,6 @@ const map = L.map('map')
                     player_points.innerText = codes.points
 
                     calculate_co2_budget(codes, parseInt(dist))
-
-                    getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
                     generateAirports();
                     get_event()
                 });
