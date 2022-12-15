@@ -1,7 +1,55 @@
-async function player_info(){
-    console.log('getting player info')
-    let name = prompt("Give player name")
-    let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
+function ask_player_info(){
+    const diffModal = document.getElementById('info-modal')
+    diffModal.style.display = "block"
+    let difficulty
+    let name
+
+    const easyBtn = document.getElementById('easy');
+    const mediumBtn = document.getElementById('medium');
+    const hardBtn = document.getElementById('hard');
+
+    easyBtn.addEventListener('click', function(){
+        const inputField = document.querySelector('input')
+        name = inputField
+        difficulty = "Easy"
+        diffModal.style.display = "none"
+
+        if (name.length > 0) {
+            player_info(name, difficulty)
+            getAirports()
+            console.log(codes)
+        }
+    })
+    mediumBtn.addEventListener('click', function(){
+        event.preventDefault()
+        const inputField = document.querySelector('input')
+        name = inputField
+        diffModal.style.display = "none"
+
+        if (name.length > 0) {
+            player_info(name, difficulty)
+            getAirports()
+        }
+    })
+    hardBtn.addEventListener('click', function(){
+        event.preventDefault()
+        const inputField = document.querySelector('input')
+        name = inputField
+        diffModal.style.display = "none"
+
+        if (name.length > 0) {
+            player_info(name, difficulty)
+            getAirports()
+        }
+    })
+
+
+}
+
+
+async function player_info(name, difficulty){
+
+    //let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
     console.log("Name and difficulty", name, difficulty)
     try {
         const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
@@ -211,8 +259,7 @@ function game_over(){
 }
 
 
-let codes = player_info()
-console.log(codes)
+let codes
 target = document.getElementById('the-map')
 
 
@@ -349,8 +396,6 @@ const map = L.map('map')
                 marker.bindPopup(popupContent);
             }
         }
-        console.log(codes)
     }
 
-    getAirports()
-
+    ask_player_info()
