@@ -207,7 +207,6 @@ def get_player_results():
     cursor = connection.cursor()
     cursor.execute(sql)
     result = cursor.fetchall()
-    print(result)
     return result
 
 if __name__ == '__main__':
