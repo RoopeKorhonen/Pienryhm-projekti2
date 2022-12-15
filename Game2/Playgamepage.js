@@ -59,9 +59,10 @@ async function get_event() {
 function play_event(question) {
     console.log(question)
     if (Math.random() < 2 / 3) {
-        const modal = document.getElementById("myModal")
-        const resultModal = document.getElementById("result")
-        const button1 = document.getElementById("button1")
+        const modal = document.getElementById("myModal");
+        const modalBG = document.getElementById("modal-background");
+        const resultModal = document.getElementById("result");
+        const button1 = document.getElementById("button1");
         const button2 = document.getElementById('button2');
         const header = document.getElementById('question');
         const question_text = question["question"];
@@ -69,6 +70,7 @@ function play_event(question) {
         const wrong_answer = question["wrong_answer"];
         let correct = right_answer
         modal.style.display = "block"
+        modalBG.style.display = "block";
         header.innerHTML = question_text
         console.log(correct)
 
@@ -94,22 +96,23 @@ function play_event(question) {
             console.log('button 1 is right')
             button1.innerText = right_answer
             button2.innerText = wrong_answer
-            correct = button1.innerText
         } else {
             console.log('button 2 is right')
             button1.innerText = wrong_answer
             button2.innerText = right_answer
-            correct = button2.innerText
         }
 
         button1.addEventListener('click', function getAnswer() {
             button1.replaceWith(button1.cloneNode(true))
             button2.replaceWith(button2.cloneNode(true))
+            modal.style.display = "none";
+            modalBG.style.display = "none";
             clearInterval(timer);
             console.log('button 1 pressed')
             let answer = button1.innerText;
 
-            if (answer === right_answer) {
+            if (answer === correct
+            ) {
                 codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
@@ -122,7 +125,6 @@ function play_event(question) {
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
-                modal.style.display = "none";
                 button2.removeEventListener('click', getAnswer)
                 clearInterval(message);
             }, 2000)
@@ -133,13 +135,15 @@ function play_event(question) {
         button2.addEventListener('click', function getAnswer2() {
             button1.replaceWith(button1.cloneNode(true))
             button2.replaceWith(button2.cloneNode(true))
+            modal.style.display = "none";
+            modalBG.style.display = "none";
             button2.removeEventListener('click', getAnswer2)
             clearInterval(timer);
             console.log('button 2 pressed')
             let answer2 = button2.innerText;
             console.log(answer2)
 
-            if (answer2 === right_answer) {
+            if (answer2 === correct) {
                 codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
 
                 console.log("OIKEIN!!!!!!!!!!!!!!")
