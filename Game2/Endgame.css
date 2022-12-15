@@ -1,0 +1,33 @@
+body{
+    font-family: "Lucida Console", Courier, monospace;
+    padding: 7rem;
+    background-image: url(https://images5.alphacoders.com/479/479484.jpg);
+    background-size: cover;
+    overflow: hidden;
+}
+
+#player_end_info{
+    border: solid 5px black;
+    font-size: 50px;
+    background-color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+h1{
+    padding: 1rem;
+    border: solid 5px black;
+    background-color: white;
+    font-size: 80px;
+    text-align: center;
+}
+
+a{
+    border: solid 5px black;
+    color: black;
+    font-size: 30px;
+    padding: 2rem;
+    background-color: white;
+    text-align: center;
+    text-decoration: none;
+}

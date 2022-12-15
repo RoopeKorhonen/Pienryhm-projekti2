@@ -201,6 +201,15 @@ def game_over(name, score, diff):
     cursor = connection.cursor()
     cursor.execute(sql)
 
+@app.route('/get_player_results/')
+def get_player_results():
+    sql = "SELECT screen_name, highscores, difficulty FROM game ORDER BY id DESC LIMIT 1;"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    print(result)
+    return result
+
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'
     app.run(use_reloader=True, host='127.0.0.1', port=5000)

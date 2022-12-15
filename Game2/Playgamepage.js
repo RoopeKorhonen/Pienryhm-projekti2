@@ -266,7 +266,7 @@ async function game_over(){
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
-    location.replace("./Top5highscorespage.html")
+    location.replace("./Endgame.html")
 }
 
 
