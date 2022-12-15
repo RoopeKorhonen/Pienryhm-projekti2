@@ -1,63 +1,56 @@
-function ask_player_info(){
-    const diffModal = document.getElementById('info-modal')
-    diffModal.style.display = "block"
-    let difficulty
-    let name
+const diffModal = document.getElementById('info-modal')
+diffModal.style.display = "block"
+let name
+const inputField = document.querySelector('input')
+let difficulty
 
-    const easyBtn = document.getElementById('easy');
-    const mediumBtn = document.getElementById('medium');
-    const hardBtn = document.getElementById('hard');
+const easyBtn = document.getElementById('easy');
+const mediumBtn = document.getElementById('medium');
+const hardBtn = document.getElementById('hard');
 
-    easyBtn.addEventListener('click', function(){
-        const inputField = document.querySelector('input')
-        name = inputField
+easyBtn.addEventListener('click', function(){
+    name = inputField.value
+
+    if (name.length > 0) {
         difficulty = "Easy"
+        player_info(name, difficulty)
         diffModal.style.display = "none"
+    }
+})
+mediumBtn.addEventListener('click', function(){
+    name = inputField.value
 
-        if (name.length > 0) {
-            player_info(name, difficulty)
-            getAirports()
-            console.log(codes)
-        }
-    })
-    mediumBtn.addEventListener('click', function(){
-        event.preventDefault()
-        const inputField = document.querySelector('input')
-        name = inputField
+    if (name.length > 0) {
+        difficulty = "Medium"
+        player_info(name, difficulty)
         diffModal.style.display = "none"
+    }
+})
+hardBtn.addEventListener('click', function(){
+    name = inputField.value
 
-        if (name.length > 0) {
-            player_info(name, difficulty)
-            getAirports()
-        }
-    })
-    hardBtn.addEventListener('click', function(){
-        event.preventDefault()
-        const inputField = document.querySelector('input')
-        name = inputField
+    if (name.length > 0) {
+        difficulty = "Hard"
+        player_info(name, difficulty)
         diffModal.style.display = "none"
-
-        if (name.length > 0) {
-            player_info(name, difficulty)
-            getAirports()
-        }
-    })
-
-
-}
+    }
+})
 
 
 async function player_info(name, difficulty){
-
-    //let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
-    console.log("Name and difficulty", name, difficulty)
+    /* console.log('getting player info')
+    const diffModal = document.getElementById('info-modal')
+    diffModal.style.display = "block"
+    let name = prompt("Give player name")
+    let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
+    console.log("Name and difficulty", name, difficulty) */
     try {
         const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
         const data = await response.json();
         append_info(data)
         codes = data
         console.log('codes: ' + codes)
-        return data;
+        getAirports()
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
@@ -260,6 +253,7 @@ function game_over(){
 
 
 let codes
+console.log(codes)
 target = document.getElementById('the-map')
 
 
@@ -396,6 +390,5 @@ const map = L.map('map')
                 marker.bindPopup(popupContent);
             }
         }
+        console.log(codes)
     }
-
-    ask_player_info()
