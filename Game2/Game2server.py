@@ -24,7 +24,14 @@ class Player:
     def __init__(self, name, difficulty,):
         self.name = name
         self.difficulty = difficulty
-        self.co2_budget = 50000
+
+        if self.difficulty == "Easy":
+            self.co2_budget = 50000
+        elif self.difficulty == "Medium":
+            self.co2_budget = 25000
+        else:
+            self.co2_budget = 10000
+
         self.highscores = 0
         self.location = ""
 
