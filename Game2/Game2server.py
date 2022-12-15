@@ -24,7 +24,14 @@ class Player:
     def __init__(self, name, difficulty,):
         self.name = name
         self.difficulty = difficulty
-        self.co2_budget = 50000
+
+        if self.difficulty == "Easy":
+            self.co2_budget = 50000
+        elif self.difficulty == "Medium":
+            self.co2_budget = 25000
+        else:
+            self.co2_budget = 10000
+
         self.highscores = 0
         self.location = ""
 
@@ -185,6 +192,14 @@ def calculate_co2_budget(player_budget, dist):
     print(f"new budget", new_budget)
     return {"budget": new_budget}
 
+
+@app.route('/game_over/<name>/<score>/<diff>')
+def game_over(name, score, diff):
+    print(name, score, diff)
+    sql = "INSERT INTO game (screen_name, highscores, difficulty) " \
+          "values ('" + name + "', '" + score + "', '" + diff + "');"
+    cursor = connection.cursor()
+    cursor.execute(sql)
 
 if __name__ == '__main__':
     app.config['CORS_HEADERS'] = 'Content-Type'

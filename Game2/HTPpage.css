@@ -21,6 +21,8 @@ nav img {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: white;
+    background-color: rgb(0,0,0,0.6);
 }
 .center-div h1 {
     font-size: 50px;

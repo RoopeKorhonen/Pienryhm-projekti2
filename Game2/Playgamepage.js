@@ -1,29 +1,70 @@
-async function player_info(){
-    console.log('getting player info')
+const diffModal = document.getElementById('info-modal')
+diffModal.style.display = "block"
+let name
+const inputField = document.querySelector('input')
+let difficulty
+
+const easyBtn = document.getElementById('easy');
+const mediumBtn = document.getElementById('medium');
+const hardBtn = document.getElementById('hard');
+
+easyBtn.addEventListener('click', function(){
+    name = inputField.value
+
+    if (name.length > 0) {
+        difficulty = "Easy"
+        player_info(name, difficulty)
+        diffModal.style.display = "none"
+    }
+})
+mediumBtn.addEventListener('click', function(){
+    name = inputField.value
+
+    if (name.length > 0) {
+        difficulty = "Medium"
+        player_info(name, difficulty)
+        diffModal.style.display = "none"
+    }
+})
+hardBtn.addEventListener('click', function(){
+    name = inputField.value
+
+    if (name.length > 0) {
+        difficulty = "Hard"
+        player_info(name, difficulty)
+        diffModal.style.display = "none"
+    }
+})
+
+
+async function player_info(name, difficulty){
+    /* console.log('getting player info')
+    const diffModal = document.getElementById('info-modal')
+    diffModal.style.display = "block"
     let name = prompt("Give player name")
     let difficulty = prompt("Give difficulty level Easy/Medium/Hard")
-    console.log("Name and difficulty", name, difficulty)
+    console.log("Name and difficulty", name, difficulty) */
     try {
         const response = await fetch('http://127.0.0.1:5000/player_info/' + name +'/' + difficulty + '');
         const data = await response.json();
         append_info(data)
         codes = data
-        return data;
+        console.log('codes: ' + codes)
+        getAirports()
     } catch (error) {
         console.log('Verkkovirhe: ', error)
     }
 }
-
+let player = document.createElement("tr");
+let player_username = document.createElement("td");
+let player_points = document.createElement("td");
+let player_difficulty = document.createElement("td");
+let player_budjet = document.createElement("td");
 
 function append_info(datax){
     console.log("Appendi sisällä",datax)
     let list = document.getElementById('player_info');
     for(let i = 0; i < 1; i++){
-        let player = document.createElement("tr")
-        let player_username = document.createElement("td")
-        let player_points = document.createElement("td")
-        let player_difficulty = document.createElement("td")
-        let player_budjet = document.createElement("td")
         player_username.innerText = datax['name']
         let player_points_name = datax['points']
         let player_co2_budget_name = datax['co2_budjet']
@@ -72,10 +113,18 @@ function play_event(question) {
         modal.style.display = "block"
         modalBG.style.display = "block";
         header.innerHTML = question_text
-        console.log(correct)
 
+        let timeAvailable
+        if (difficulty === "Easy") {
+            timeAvailable = 15;
+        } else if (difficulty === "Medium"){
+            timeAvailable = 10;
+        }
+        else{
+            timeAvailable = 5;
+        }
 
-        let time = 10;
+        let time = timeAvailable;
         let timerElement = document.getElementById("timer");
         timerElement.innerHTML = "Time remaining: " + time + " seconds";
         //document.body.appendChild(timerElement);
@@ -93,11 +142,9 @@ function play_event(question) {
 
         let button_rand = Math.floor(Math.random() * 2)
         if (button_rand === 1) {
-            console.log('button 1 is right')
             button1.innerText = right_answer
             button2.innerText = wrong_answer
         } else {
-            console.log('button 2 is right')
             button1.innerText = wrong_answer
             button2.innerText = right_answer
         }
@@ -113,7 +160,8 @@ function play_event(question) {
 
             if (answer === correct
             ) {
-                codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
+                codes.co2_budjet += Math.round((parseInt(dist) / 100 * 20))
+                player_budjet.innerText = codes.co2_budjet
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'CORRECT!'
@@ -121,11 +169,15 @@ function play_event(question) {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'WRONG!'
-                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 50))
+                codes.co2_budjet -= Math.round((parseInt(dist) * 2))
+                player_budjet.innerText = codes.co2_budjet
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
                 button2.removeEventListener('click', getAnswer)
+                if (codes.co2_budjet <= 0){
+                game_over()
+            }
                 clearInterval(message);
             }, 2000)
             button1.removeEventListener('click', getAnswer)
@@ -144,8 +196,8 @@ function play_event(question) {
             console.log(answer2)
 
             if (answer2 === correct) {
-                codes.co2_budjet += Math.round((parseInt(codes.co2_budjet) / 100 * 20))
-
+                codes.co2_budjet += Math.round((parseInt(dist) / 100 * 10))
+                player_budjet.innerText = codes.co2_budjet
                 console.log("OIKEIN!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'CORRECT!'
@@ -153,12 +205,15 @@ function play_event(question) {
                 console.log("VÄÄRIN!!!!!!!!!!!!!!!!!!!!!!")
                 resultModal.style.display = "block";
                 resultModal.innerText = 'WRONG!'
-                codes.co2_budjet -= Math.round((parseInt(codes.co2_budjet) / 100 * 50))
+                codes.co2_budjet -= Math.round((parseInt(dist) * 2))
+                player_budjet.innerText = codes.co2_budjet
             }
             const message = setInterval(function() {
                 resultModal.style.display = "none";
-                modal.style.display = "none";
-                button2.removeEventListener('click', getAnswer2)
+                button2.removeEventListener('click', getAnswer2);
+                if (codes.co2_budjet <= 0){
+                game_over()}
+
                 clearInterval(message);
             }, 2000)
         })
@@ -170,6 +225,8 @@ function play_event(question) {
         }
 
         return question_text
+    } else{
+         getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
     }
 
 }
@@ -179,10 +236,10 @@ async function calculate_co2_budget(player_budget, distance) {
         const response = await fetch('http://127.0.0.1:5000/calculate_co2_budget/' + player_budget['co2_budjet'] + '/' + distance);
         const data = await response.json()
         codes.co2_budjet = data.budget;
+        player_budjet.innerText = codes.co2_budjet
         if (codes.co2_budjet <= 0){
             game_over()
         }
-        console.log(data)
         /* let player_budget_open = await player_budget.then(function(result) {
             console.log("promise auki juttu", result)
             return result
@@ -198,11 +255,21 @@ async function calculate_co2_budget(player_budget, distance) {
     }
 }
 
-function game_over(){
+async function game_over(){
+   try {
+        const response = await fetch('http://127.0.0.1:5000/game_over/' + codes["name"] + '/' + codes["points"] + '/' + codes["difficulty"]);
+        const data = await response.json();
+        console.log("Event data inffo",data)
+        play_event(data)
+        return data;
+    } catch (error) {
+        console.log('Verkkovirhe: ', error)
+    }
     location.replace("./Fullhighscorespage.html")
 }
 
-let codes = player_info()
+
+let codes
 console.log(codes)
 target = document.getElementById('the-map')
 
@@ -238,11 +305,67 @@ const map = L.map('map')
     const redIcon = L.divIcon({className: 'red-icon'})
 
 
+    /*Get the weather at the airport the player is at*/
     async function getWeather(lat, long){
         try{
             const response = await fetch('http://127.0.0.1:5000/get_weather/' + lat + '/' + long)
             const data = await response.json();
-            console.log(data)
+            console.log(data["description"])
+            let alertModal = document.getElementById('info-modal')
+
+            if (data["description"].includes("thunderstorm")){
+                codes.co2_budjet -= 10000
+                player_budjet.innerText = codes.co2_budjet
+                alertModal.style.display = "block";
+                alertModal.innerText = "Oh no! You flew into a thunder storm and had to take multiple longer routes to avoid getting hit! This will be disastrous for your Co2 consumption!"
+
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()
+            }
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("rain")){
+                player_budjet.innerText = codes.co2_budjet
+                if (data["description"].includes("shower rain")){
+                    console.log("OH NO SHOWER RAIN TIME!")
+                    alertModal.style.display = "block";
+                    alertModal.innerText = "Oh no you've been struck by heavy rain on your trip!"
+                    codes.co2_budjet -= 2000
+                }
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("clear sky")){
+                alertModal.style.display = "block";
+                alertModal.innerText = "the pleasant clear skies made your trip much smoother, you used less Co2."
+                codes.co2_budjet += 3000
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
+
+            if (data["description"].includes("mist")){
+                alertModal.style.display = "block";
+                alertModal.innerText = "This mist makes it very hard to see"
+                const alert = setInterval(function() {
+                    alertModal.style.display = "none";
+                    if (codes.co2_budjet <= 0){
+                    game_over()}
+                clearInterval(alert);
+            }, 3000)
+            }
         } catch (error){
             console.log(error)
         }
@@ -287,6 +410,7 @@ const map = L.map('map')
     this will determine which airport will be marked as "active" after the refresh*/
     let current_airport
 
+    /*Take the airports from the JSON generated at the start of the game and put them on the map*/
     async function generateAirports(){
         console.log(airport_list)
         airports.clearLayers();
@@ -321,15 +445,15 @@ const map = L.map('map')
                 popupContent.append(h2text);
 
                 goButton.addEventListener('click', function () {
-                    console.log(current_airport)
                     //Tässä kutsutaa tota alempaa funktioo nii laskisi uudet pisteet ei toimi saa yrittää korjata
                     current_airport = airport
                     current_airport.active = true
-                    console.log(current_airport)
+
                     dist = parseInt(textfordist.Distance)
-                    let new_budget = calculate_co2_budget(codes, parseInt(dist))
-                    console.log(new_budget)
-                    getWeather(current_airport.latitude_deg, current_airport.longitude_deg)
+                    codes.points += 1000
+                    player_points.innerText = codes.points
+
+                    calculate_co2_budget(codes, parseInt(dist))
                     generateAirports();
                     get_event()
                 });
@@ -339,6 +463,3 @@ const map = L.map('map')
         }
         console.log(codes)
     }
-
-    getAirports()
-
