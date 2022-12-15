@@ -135,6 +135,7 @@ function play_event(question) {
                 alert("Time is up, penalty has been added to your co2 fuel.")
                 //tähän -200 co2 komento, joka päivittää tiedot.
                 modal.style.display = "none"
+                modalBG.style.display = "none"
                 clearInterval(timer);
             }
         }, 1000);
